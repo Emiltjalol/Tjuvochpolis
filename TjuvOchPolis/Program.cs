@@ -66,7 +66,7 @@
             {
                 int randomX = random.Next(1, width - 1);
                 int randomY = random.Next(1, height - 1);
-                var thief = new Thief(thiefName[i], randomX, randomY,'C');
+                var thief = new Thief(thiefName[i], randomX, randomY,'T');
                 personList.Add(thief);
             }
 
@@ -108,7 +108,7 @@
                 // Rita och uppdatera alla gubbar
                 for (int i = 0; i < totalGubbar; i++)
                 {
-                    Person person = gubbar[i];
+                    Person person = personList[i];
                     person.Draw(xPositions[i], yPositions[i]);
 
                     int direction = random.Next(8); // Slumpmässig riktning
