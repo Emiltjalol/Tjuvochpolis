@@ -104,19 +104,35 @@
 
                 // Skapa en dictionary för att hålla reda på vilka gubbar som befinner sig på varje position
                 Dictionary<(int, int), List<Person>> gubbarPåPosition = new Dictionary<(int, int), List<Person>>();
-                
+
                 // Rita och uppdatera alla gubbar
                 for (int i = 0; i < totalGubbar; i++)
                 {
                     Person person = personList[i];
+                    int originalForegroundColor = (int)Console.ForegroundColor; // Spara den ursprungliga färgen
+
+                    if (person is Police) // Kontrollera om personen är en polis
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue; // Ändra färgen till blå för polisen
+                    }
+                    else if (person is Citizen)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green; // Ändra färgen till grön för medborgaren
+                    }
+                    else if (person is Thief)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red; // Ändra färgen till röd för tjuven
+                    }
+
                     person.Draw(xPositions[i], yPositions[i]);
 
-                    int direction = random.Next(8); // Slumpmässig riktning
+                    // Återställ den ursprungliga färgen
+                    Console.ForegroundColor = (ConsoleColor)originalForegroundColor;
 
-                    // Uppdatera positionen för gubben
+                    // Uppdatera positionen och dictionary
+                    int direction = random.Next(8); // Slumpmässig riktning
                     UpdatePosition(ref xPositions[i], ref yPositions[i], direction, width, height);
 
-                    // Lägg till gubben på dess nya position i dictionary
                     var position = (xPositions[i], yPositions[i]);
                     if (!gubbarPåPosition.ContainsKey(position))
                     {
@@ -142,7 +158,7 @@
                                  position.Value.Exists(person => person.Symbol == 'M'))
                         {
                             Console.SetCursorPosition(0, height + 2);
-                            Console.Write("En tjuv har rånat en medborgare");
+                            Console.Write("En tjuv har råna");
 
                         }
                     }

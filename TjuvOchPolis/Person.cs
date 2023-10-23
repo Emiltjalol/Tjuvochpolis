@@ -12,8 +12,9 @@ namespace TjuvOchPolis
         public int XCoordinate { get; set; }
         public int YCoordinate { get; set; }
         public List<string> Inventory { get; set; }
-
         public char Symbol { get; set; }
+
+
 
 
         public void Draw(int x, int y)
