@@ -109,6 +109,7 @@
                 for (int i = 0; i < totalGubbar; i++)
                 {
                     Person person = personList[i];
+
                     int originalForegroundColor = (int)Console.ForegroundColor; // Spara den ursprungliga färgen
 
                     if (person is Police) // Kontrollera om personen är en polis
@@ -146,26 +147,35 @@
                 {
                     if (position.Value.Count > 1)
                     {
-                        // Här kan du lägga till logik för att skriva ut meddelanden i konsollen
-                        if (position.Value.Exists(person => person.Symbol == 'T') &&
-                            position.Value.Exists(person => person.Symbol == 'P'))
+                        var police = position.Value.OfType<Police>().FirstOrDefault();
+                        var thief = position.Value.OfType<Thief>().FirstOrDefault();
+
+                        if (police != null && thief != null)
                         {
                             Console.SetCursorPosition(0, height + 1);
-                            Console.Write("En tjuv har blivit tagen av polisen och åker in i fängelset");
-
+                            Console.WriteLine($"Polisen {police.Namn} har fångat tjuven {thief.Namn}!");
+                            
                         }
-                        else if (position.Value.Exists(person => person.Symbol == 'T') &&
-                                 position.Value.Exists(person => person.Symbol == 'M'))
+
+                    }
+                    if (position.Value.Count > 1)
+                    {
+                        var citizen = position.Value.OfType<Citizen>().FirstOrDefault();
+                        var thief = position.Value.OfType<Thief>().FirstOrDefault();
+
+                        if (citizen != null && thief != null)
                         {
-                            Console.SetCursorPosition(0, height + 2);
-                            Console.Write("En tjuv har råna");
+                            Console.SetCursorPosition(0, height + 1);
+                            Console.WriteLine($"Tjuven {thief.Namn} har rånat medborgaren {citizen.Namn}!");
 
                         }
+
                     }
                 }
 
                 // Vänta en kort stund för att visa rörelse
-                Thread.Sleep(900);
+                Thread.Sleep(600);
+
             }
         }
 
