@@ -6,36 +6,73 @@
         {
             int width = 90; // Bredden på fyrkanten
             int height = 25; // Höjden på fyrkanten
-            int numGubbarP = 10; // Antal "P"-gubbar
-            int numGubbarT = 20; // Antal "T"-gubbar
-            int numGubbarM = 30; // Antal "M"-gubbar
-            int totalGubbar = numGubbarP + numGubbarT + numGubbarM;
+            List<Person> personList = new List<Person>();
+            Random random = new Random();
+            int totalGubbar = 60;
 
             Console.CursorVisible = false; // Dölj pekaren
 
             List<Person> gubbar = new List<Person>();
 
-            // Skapa "P"-gubbar
-            for (int i = 0; i < numGubbarP; i++)
+            string[] policeName = new string[]{
+            "Officer Smith","Detective Johnson","Sergeant Davis",
+            "Inspector Wilson","Captain Anderson","Lieutenant Martinez",
+            "Officer Baker","Detective Clark",
+            "Sergeant White","Inspector Harris"};
+
+            for (int j = 0; j < 10; j++)
             {
-                gubbar.Add(new Person('P'));
+                int randomX = random.Next(1, width - 1);
+                int randomY = random.Next(1, height - 1);
+                var police = new Police(policeName[j], randomX, randomY, 'P');
+                police.XCoordinate = randomX; // Uppdatera XCoordinate för polisen
+                police.YCoordinate = randomY; // Uppdatera YCoordinate för polisen
+                police.Inventory.Add("Handcuffs");
+                police.Inventory.Add("Badge");
+                police.Inventory.Add("Gun");
+                personList.Add(police);
             }
 
-            // Skapa "M"-gubbar
-            for (int i = 0; i < numGubbarM; i++)
+            string[] citizenName = new string[]{
+            "John Smith","Jane Doe","Michael Johnson","Emily Davis","David Wilson","Lisa Anderson",
+            "Sarah Martinez","Robert Baker","Mary Clark","William White","Jennifer Harris","Christopher Taylor",
+            "Karen Lewis","Richard Walker","Patricia Turner","Joseph Moore","Linda Hall","Thomas Mitchell","Cynthia Garcia",
+            "Charles Rodriguez","Nancy Scott","Daniel Young","Susan King","Matthew Wright","Helen Adams",
+            "Kevin Campbell","Sandra Green","Andrew Reed","Maria Carter","James Hall","Dwayne Johnsson"
+            };
+
+            for (int i = 0; i < 30; i++)
             {
-                gubbar.Add(new Person('M'));
+                int randomX = random.Next(1, width - 1);
+                int randomY = random.Next(1, height - 1);
+                var citizen = new Citizen(citizenName[i], randomX, randomY, 'C');
+                citizen.Inventory.Add("Keys");
+                citizen.Inventory.Add("Cellphone");
+                citizen.Inventory.Add("Wallet");
+                citizen.Inventory.Add("Watch");
+                personList.Add(citizen);
             }
 
-            // Skapa "T"-gubbar
-            for (int i = 0; i < numGubbarT; i++)
+            // Create the thiefes
+
+            string[] thiefName = new string[]{
+            "Tommy the Sneak","Sly Susie","Bobby the Bandit","Shadow Steve","Vicky Vandal",
+            "Danny the Pickpocket","Rita the Rascal","Eddie the Escapist","Maggie the Mischief",
+            "Frankie the Filcher","Lenny the Looter","Connie the Crook","Ronny the Robber","Lucy the Lawbreaker",
+            "Harry the Hoodlum","Penny the Pilferer","Vinny the Villain","Mia the Marauder","Johnny the Jewel Thief","Gina the Grifter","Larry the Imposter"
+             };
+
+            for (int i = 0; i < 20; i++)
             {
-                gubbar.Add(new Person('T'));
+                int randomX = random.Next(1, width - 1);
+                int randomY = random.Next(1, height - 1);
+                var thief = new Thief(thiefName[i], randomX, randomY,'C');
+                personList.Add(thief);
             }
 
             int[] xPositions = new int[totalGubbar];
             int[] yPositions = new int[totalGubbar];
-            Random random = new Random();
+            
 
             // Placera gubbarna i slumpmässiga startpositioner
             for (int i = 0; i < totalGubbar; i++)
@@ -67,7 +104,7 @@
 
                 // Skapa en dictionary för att hålla reda på vilka gubbar som befinner sig på varje position
                 Dictionary<(int, int), List<Person>> gubbarPåPosition = new Dictionary<(int, int), List<Person>>();
-
+                
                 // Rita och uppdatera alla gubbar
                 for (int i = 0; i < totalGubbar; i++)
                 {
