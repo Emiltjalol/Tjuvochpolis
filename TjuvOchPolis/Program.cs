@@ -23,28 +23,28 @@ namespace TjuvOchPolis
          
 
             string[] policeName = new string[]{
-                "Officer Smith", "Detective Johnson", "Sergeant Davis",
-                "Inspector Wilson", "Captain Anderson", "Lieutenant Martinez",
-                "Officer Baker", "Detective Clark",
-                "Sergeant White", "Inspector Harris"};
+                "Polisen Svensson", "Detektiv Johnsson", "Sergeant Davidsson",
+                "Inspektör Willhelmsson", "Kapten Andersson", "Löjtnant Martinsson",
+                "Officer Börjesson", "Detektiv Göransson",
+                "Sergant Carlberg", "Inspektör Nilsson"};
 
             for (int j = 0; j < PoliceNum; j++)
             {
                 int randomX = random.Next(1, width - 1);
                 int randomY = random.Next(1, height - 1);
                 var police = new Police(policeName[j], randomX, randomY, 'P');
-                police.Inventory.Add("Handcuffs");
-                police.Inventory.Add("Badge");
-                police.Inventory.Add("Gun");
+                police.Inventory.Add("Handbojor");
+                police.Inventory.Add("Bricka");
+                police.Inventory.Add("Pistol");
                 personList.Add(police);
             }
 
             string[] citizenName = new string[]{
-                "John Smith", "Jane Doe", "Michael Johnson", "Emily Davis", "David Wilson", "Lisa Anderson",
-                "Sarah Martinez", "Robert Baker", "Mary Clark", "William White", "Jennifer Harris", "Christopher Taylor",
-                "Karen Lewis", "Richard Walker", "Patricia Turner", "Joseph Moore", "Linda Hall", "Thomas Mitchell", "Cynthia Garcia",
-                "Charles Rodriguez", "Nancy Scott", "Daniel Young", "Susan King", "Matthew Wright", "Helen Adams",
-                "Kevin Campbell", "Sandra Green", "Andrew Reed", "Maria Carter", "James Hall", "Dwayne Johnsson"
+                "John Simonsson", "Jane Karlsson", "Michael Jonsson", "Emily Davidsson", "David Williamsson", "Lisa Andersson",
+                "Sarah Martinsson", "Robert Börjesson", "Maria Klarksson", "William Andersson", "Jennifer Jenssen", "Christoffer Grenborg ",
+                "Klara Klausson", "Richard Waldemarsson", "Patricia Tunberg", "Josef Mauritz", "Linda Hallberg", "Thomas Larsson", "Cynthia Garcia",
+                "Charles Rodriguez", "Nancy Scottsson", "Daniel Ljungberg", "Susan Klingberg", "Mattias Wright", "Helene Adamsson",
+                "Kevin Klausson", "Sandra Grenberg", "Andreas Redström", "Maria Cartelberg", "James Hallström", "Daniel Jakobsson"
             };
 
             for (int i = 0; i < CitizenNum; i++)
@@ -52,20 +52,20 @@ namespace TjuvOchPolis
                 int randomX = random.Next(1, width - 1);
                 int randomY = random.Next(1, height - 1);
                 var citizen = new Citizen(citizenName[i], randomX, randomY, 'C');
-                citizen.Inventory.Add("Keys");
-                citizen.Inventory.Add("Cellphone");
-                citizen.Inventory.Add("Wallet");
-                citizen.Inventory.Add("Watch");
+                citizen.Inventory.Add("Nycklar");
+                citizen.Inventory.Add("Mobiltelefon");
+                citizen.Inventory.Add("Plånbok");
+                citizen.Inventory.Add("Klocka");
                 personList.Add(citizen);
             }
 
             // Create the thieves
 
             string[] thiefName = new string[]{
-                "Tommy the Sneak", "Sly Susie", "Bobby the Bandit", "Shadow Steve", "Vicky Vandal",
-                "Danny the Pickpocket", "Rita the Rascal", "Eddie the Escapist", "Maggie the Mischief",
-                "Frankie the Filcher", "Lenny the Looter", "Connie the Crook", "Ronny the Robber", "Lucy the Lawbreaker",
-                "Harry the Hoodlum", "Penny the Pilferer", "Vinny the Villain", "Mia the Marauder", "Johnny the Jewel Thief", "Gina the Grifter", "Larry the Imposter"
+                "Tommy", "Susie", "Bobby", "Steve", "Vicky",
+                "Danny", "Rita", "Eddie", "Maggie",
+                "Frankie", "Lenny", "Connie", "Ronny", "Lucy",
+                "Harry", "Penny", "Vinny", "Mia", "Johnny", "Gina", "Larry"
             };
 
             for (int i = 0; i < thiefNum; i++)
@@ -115,33 +115,6 @@ namespace TjuvOchPolis
                     Console.SetCursorPosition(width, i);
                     Console.Write("|");
                 }
-
-                int prisonX = width + 2; // X-koordinat för fängelsets övre vänstra hörn
-                int prisonY = 1; // Y-koordinat för fängelsets övre vänstra hörn
-                int prisonWidth = 15; // Bredden på fängelset
-                int prisonHeight = 10; // Höjden på fängelset
-
-                // Rita fängelset
-                Console.WriteLine("");
-                for (int i = 0; i <= prisonWidth; i++)
-
-                {
-                    Console.SetCursorPosition(prisonX + i, prisonY);
-                    Console.Write("-");
-                    Console.SetCursorPosition(prisonX + i, prisonY + prisonHeight);
-                    Console.Write("-");
-                    
-                }
-
-                for (int i = 0; i <= prisonHeight; i++)
-                {
-                    Console.SetCursorPosition(prisonX, prisonY + i);
-                    Console.Write("|");
-                    Console.SetCursorPosition(prisonX + prisonWidth, prisonY + i);
-                    Console.Write("|");
-                }
-                
-
 
                 // Uppdatera och rita alla gubbar
                 for (int i = 0; i < totalGubbar; i++)
@@ -208,18 +181,15 @@ namespace TjuvOchPolis
                                 string eventDescription = $"Polisen {gubbe1.Namn} hjälper medborgaren {gubbe2.Namn}!";
                                 latestEvents.Add(eventDescription);
                             }
-                            if (latestEvents.Count > 5)
-                            {
-                                latestEvents.RemoveAt(0);
-                            }
                         }
                     }
                 }
 
-                
-
                 // Om listan över senaste händelser har fler än fem händelser, ta bort den äldsta Klar
-
+                if (latestEvents.Count > 5)
+                {
+                    latestEvents.RemoveAt(0);
+                }
 
                 // Skriv ut de senaste händelserna Klar
                 Console.SetCursorPosition(0, height + 1);
