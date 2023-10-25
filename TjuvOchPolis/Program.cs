@@ -12,7 +12,11 @@ namespace TjuvOchPolis
             int height = 25; // Höjden på fyrkanten
             int PoliceNum = 10; // Nummer av police
             int CitizenNum = 20; // Nummer av Citizen
-            int thiefNum = 10; // Nummer av Thief
+            int thiefNum = 10; // Nummer av Thief 
+            int prisonX = width + 2; // X-koordinat för fängelsets övre vänstra hörn
+            int prisonY = 1; // Y-koordinat för fängelsets övre vänstra hörn
+            int prisonWidth = 15; // Bredden på fängelset
+            int prisonHeight = 10; // Höjden på fängelset
 
             List<Person> personList = new List<Person>();
             Random random = new Random();
@@ -116,6 +120,26 @@ namespace TjuvOchPolis
                     Console.Write("|");
                 }
 
+                // Rita fängelset
+                Console.WriteLine("");
+                for (int i = 0; i <= prisonWidth; i++)
+
+                {
+                    Console.SetCursorPosition(prisonX + i, prisonY);
+                    Console.Write("-");
+                    Console.SetCursorPosition(prisonX + i, prisonY + prisonHeight);
+                    Console.Write("-");
+
+                }
+
+                for (int i = 0; i <= prisonHeight; i++)
+                {
+                    Console.SetCursorPosition(prisonX, prisonY + i);
+                    Console.Write("|");
+                    Console.SetCursorPosition(prisonX + prisonWidth, prisonY + i);
+                    Console.Write("|");
+                }
+
                 // Uppdatera och rita alla gubbar
                 for (int i = 0; i < totalGubbar; i++)
                 {
@@ -181,14 +205,12 @@ namespace TjuvOchPolis
                                 string eventDescription = $" {gubbe1.Namn} säger Hej! till medborgaren {gubbe2.Namn}!";
                                 latestEvents.Add(eventDescription);
                             }
+                            if (latestEvents.Count > 5)
+                            {
+                                latestEvents.RemoveAt(0);
+                            }
                         }
                     }
-                }
-
-                // Om listan över senaste händelser har fler än fem händelser, ta bort den äldsta Klar
-                if (latestEvents.Count > 5)
-                {
-                    latestEvents.RemoveAt(0);
                 }
 
                 // Skriv ut de senaste händelserna Klar
