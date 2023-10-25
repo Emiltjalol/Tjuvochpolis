@@ -8,12 +8,15 @@ namespace TjuvOchPolis
     {
         static void Main(string[] args)
         {
-            int width = 90; // Bredden på fyrkanten
+            int width = 100; // Bredden på fyrkanten
             int height = 25; // Höjden på fyrkanten
+            int PoliceNum = 10; // Nummer av police
+            int CitizenNum = 30; // Nummer av Citizen
+            int thiefNum = 20; // Nummer av Thief
 
             List<Person> personList = new List<Person>();
             Random random = new Random();
-            int totalGubbar = 60;
+            int totalGubbar = PoliceNum + CitizenNum + thiefNum;
 
             Console.CursorVisible = false; // Dölj pekaren
 
@@ -25,7 +28,7 @@ namespace TjuvOchPolis
                 "Officer Baker", "Detective Clark",
                 "Sergeant White", "Inspector Harris"};
 
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < PoliceNum; j++)
             {
                 int randomX = random.Next(1, width - 1);
                 int randomY = random.Next(1, height - 1);
@@ -44,7 +47,7 @@ namespace TjuvOchPolis
                 "Kevin Campbell", "Sandra Green", "Andrew Reed", "Maria Carter", "James Hall", "Dwayne Johnsson"
             };
 
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < CitizenNum; i++)
             {
                 int randomX = random.Next(1, width - 1);
                 int randomY = random.Next(1, height - 1);
@@ -65,7 +68,7 @@ namespace TjuvOchPolis
                 "Harry the Hoodlum", "Penny the Pilferer", "Vinny the Villain", "Mia the Marauder", "Johnny the Jewel Thief", "Gina the Grifter", "Larry the Imposter"
             };
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < thiefNum; i++)
             {
                 int randomX = random.Next(1, width - 1);
                 int randomY = random.Next(1, height - 1);
