@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace TjuvOchPolis
 {
@@ -14,9 +12,6 @@ namespace TjuvOchPolis
         public List<string> Inventory { get; set; }
         public char Symbol { get; set; }
 
-
-
-
         public void Draw(int x, int y)
         {
             Console.SetCursorPosition(x, y);
@@ -27,60 +22,34 @@ namespace TjuvOchPolis
         {
             Namn = namn;
             Inventory = new List<string>();
-            Symbol= symbol;
-
-        }
-
-
-        public virtual char GetSymbol()
-        {
-            // Return the symbol for the person (customize this logic as needed)
-            return 'X';
+            Symbol = symbol;
         }
     }
-
-
 
     class Police : Person
     {
         public Police(string namn, int xcoordinate, int ycoordinate, char symbol) : base(namn, symbol)
         {
-            
             XCoordinate = xcoordinate;
             YCoordinate = ycoordinate;
-        }
-
-        public override char GetSymbol()
-        {
-            return 'P';
         }
     }
 
     class Citizen : Person
     {
-        public Citizen(string namn, int xcoordinate, int ycoordinate,char symbol) : base(namn,symbol)
+        public Citizen(string namn, int xcoordinate, int ycoordinate, char symbol) : base(namn, symbol)
         {
             XCoordinate = xcoordinate;
             YCoordinate = ycoordinate;
-        }
-
-        public override char GetSymbol()
-        {
-            return 'C';
         }
     }
 
     class Thief : Person
     {
-        public Thief(string namn, int xcoordinate, int ycoordinate,char symbol) : base(namn,symbol)
+        public Thief(string namn, int xcoordinate, int ycoordinate, char symbol) : base(namn, symbol)
         {
             XCoordinate = xcoordinate;
             YCoordinate = ycoordinate;
-        }
-
-        public override char GetSymbol()
-        {
-            return 'T';
         }
     }
 }
