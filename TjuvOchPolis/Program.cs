@@ -131,7 +131,7 @@ namespace TjuvOchPolis
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                     }
-
+                    
                     person.Draw(xPositions[i], yPositions[i]);
 
                     Console.ForegroundColor = (ConsoleColor)originalForegroundColor;
@@ -158,12 +158,15 @@ namespace TjuvOchPolis
                             {
                                 string eventDescription = $"Polisen {gubbe1.Namn} har fångat tjuven {gubbe2.Namn}!";
                                 latestEvents.Add(eventDescription);
+                                gubbe1.CatchThief(gubbe2);
                             }
                             // Logik för att identifiera händelser (polis fångar tjuv, tjuv rånar medborgare osv.)
                             else if (gubbe1 is Citizen && gubbe2 is Thief)
                             {
                                 string eventDescription = $"Tjuven {gubbe2.Namn} har rånat medborgaren {gubbe1.Namn}!";
                                 latestEvents.Add(eventDescription);
+                                gubbe2.Steal(gubbe1);
+
                             }
                             else if (gubbe1 is Police && gubbe2 is Citizen)
                             {

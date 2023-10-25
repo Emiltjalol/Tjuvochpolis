@@ -33,6 +33,26 @@ namespace TjuvOchPolis
             XCoordinate = xcoordinate;
             YCoordinate = ycoordinate;
         }
+        public void CatchThief(Thief thief)
+        {
+            if (thief.Inventory.Count > 0)
+            {
+                //Console.WriteLine($"{Namn} har fångat tjuven {thief.Namn}!");
+
+                foreach (string stolenItem in thief.Inventory)
+                {
+                    Inventory.Add(stolenItem);
+                }
+
+                Thread.Sleep(1500);
+                thief.Inventory.Clear();
+            }
+            else
+            {
+                //Temp Console.Writeline
+                //Console.WriteLine("Har inget inte gjort något ännu");
+            }
+        }
     }
 
     class Citizen : Person
@@ -50,6 +70,21 @@ namespace TjuvOchPolis
         {
             XCoordinate = xcoordinate;
             YCoordinate = ycoordinate;
+        }
+
+        //behövs fixa /Eric K
+
+        public void Steal(Citizen citizen)
+        {
+            if (citizen.Inventory.Count > 0)
+            {
+                int Item = new Random().Next(citizen.Inventory.Count);
+                string stolenItem = citizen.Inventory[Item];
+                Inventory.Add(stolenItem);
+                citizen.Inventory.RemoveAt(Item);
+                //Console.WriteLine($"Tjuven {Namn} har rånat medborgaren {citizen.Namn} på {stolenItem}");
+                Thread.Sleep(200);
+            }
         }
     }
 }
