@@ -11,8 +11,8 @@ namespace TjuvOchPolis
             int width = 100; // Bredden på fyrkanten
             int height = 25; // Höjden på fyrkanten
             int PoliceNum = 10; // Nummer av police
-            int CitizenNum = 30; // Nummer av Citizen
-            int thiefNum = 20; // Nummer av Thief
+            int CitizenNum = 20; // Nummer av Citizen
+            int thiefNum = 10; // Nummer av Thief
 
             List<Person> personList = new List<Person>();
             Random random = new Random();
@@ -20,7 +20,7 @@ namespace TjuvOchPolis
 
             Console.CursorVisible = false; // Dölj pekaren
 
-            List<Person> gubbar = new List<Person>();
+         
 
             string[] policeName = new string[]{
                 "Officer Smith", "Detective Johnson", "Sergeant Davis",
