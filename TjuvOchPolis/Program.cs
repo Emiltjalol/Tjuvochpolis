@@ -160,7 +160,7 @@ namespace TjuvOchPolis
                             var gubbe2 = personList[j];
                             if (gubbe1 is Police && gubbe2 is Thief)
                             {
-                                string eventDescription = $"Polisen {gubbe1.Namn} har fångat tjuven {gubbe2.Namn}!";
+                                string eventDescription = $" {gubbe1.Namn} har fångat tjuven {gubbe2.Namn}!";
                                 latestEvents.Add(eventDescription);
                                 Police police = (Police)gubbe1;
                                 Thief thief = (Thief)gubbe2;
@@ -178,7 +178,7 @@ namespace TjuvOchPolis
                             }
                             else if (gubbe1 is Police && gubbe2 is Citizen)
                             {
-                                string eventDescription = $"Polisen {gubbe1.Namn} hjälper medborgaren {gubbe2.Namn}!";
+                                string eventDescription = $" {gubbe1.Namn} säger Hej! till medborgaren {gubbe2.Namn}!";
                                 latestEvents.Add(eventDescription);
                             }
                         }
