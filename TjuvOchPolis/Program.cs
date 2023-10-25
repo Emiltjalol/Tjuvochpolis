@@ -158,14 +158,18 @@ namespace TjuvOchPolis
                             {
                                 string eventDescription = $"Polisen {gubbe1.Namn} har fångat tjuven {gubbe2.Namn}!";
                                 latestEvents.Add(eventDescription);
-                                gubbe1.CatchThief(gubbe2);
+                                Police police = (Police)gubbe1;
+                                Thief thief = (Thief)gubbe2;
+                                police.CatchThief(thief);
                             }
                             // Logik för att identifiera händelser (polis fångar tjuv, tjuv rånar medborgare osv.)
                             else if (gubbe1 is Citizen && gubbe2 is Thief)
                             {
                                 string eventDescription = $"Tjuven {gubbe2.Namn} har rånat medborgaren {gubbe1.Namn}!";
                                 latestEvents.Add(eventDescription);
-                                gubbe2.Steal(gubbe1);
+                                Citizen citizen = (Citizen)gubbe1;
+                                Thief thief = (Thief)gubbe2;
+                                thief.Steal(citizen);
 
                             }
                             else if (gubbe1 is Police && gubbe2 is Citizen)
