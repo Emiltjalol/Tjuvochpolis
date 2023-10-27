@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using static TjuvOchPolis.Draw;
 
 namespace TjuvOchPolis
 {
@@ -18,70 +19,29 @@ namespace TjuvOchPolis
             int prisonWidth = 15; // Bredden på fängelset
             int prisonHeight = 10; // Höjden på fängelset
 
-            List<Person> personList = new List<Person>();
             Random random = new Random();
+            List<Police> policeList = PoliceFactory.CreatePolice(PoliceNum, width, height, random);
+            List<Citizen> citizenList = CitizenFactory.CreateCitizens(CitizenNum, width, height, random);
+            List<Thief> thiefList = ThiefFactory.CreateThieves(thiefNum, width, height, random);
+
+
+            List<Person> personList = new List<Person>();
+
             int totalGubbar = PoliceNum + CitizenNum + thiefNum;
 
-            Console.CursorVisible = false; // Dölj pekaren
+            Console.CursorVisible = false;
 
-         
+            // Gör poliser
+            personList.AddRange(policeList);
+            // Gör medborgare
+            personList.AddRange(citizenList);
+            // Gör tjuvar
+            personList.AddRange(thiefList);       
 
-            string[] policeName = new string[]{
-                "Polisen Svensson", "Detektiv Johnsson", "Sergeant Davidsson",
-                "Inspektör Willhelmsson", "Kapten Andersson", "Löjtnant Martinsson",
-                "Officer Börjesson", "Detektiv Göransson",
-                "Sergant Carlberg", "Inspektör Nilsson"};
-
-            for (int j = 0; j < PoliceNum; j++)
-            {
-                int randomX = random.Next(1, width - 1);
-                int randomY = random.Next(1, height - 1);
-                var police = new Police(policeName[j], randomX, randomY, 'P');
-                police.Inventory.Add("Handbojor");
-                police.Inventory.Add("Bricka");
-                police.Inventory.Add("Pistol");
-                personList.Add(police);
-            }
-
-            string[] citizenName = new string[]{
-                "John Simonsson", "Jane Karlsson", "Michael Jonsson", "Emily Davidsson", "David Williamsson", "Lisa Andersson",
-                "Sarah Martinsson", "Robert Börjesson", "Maria Klarksson", "William Andersson", "Jennifer Jenssen", "Christoffer Grenborg ",
-                "Klara Klausson", "Richard Waldemarsson", "Patricia Tunberg", "Josef Mauritz", "Linda Hallberg", "Thomas Larsson", "Cynthia Garcia",
-                "Charles Rodriguez", "Nancy Scottsson", "Daniel Ljungberg", "Susan Klingberg", "Mattias Wright", "Helene Adamsson",
-                "Kevin Klausson", "Sandra Grenberg", "Andreas Redström", "Maria Cartelberg", "James Hallström", "Daniel Jakobsson"
-            };
-
-            for (int i = 0; i < CitizenNum; i++)
-            {
-                int randomX = random.Next(1, width - 1);
-                int randomY = random.Next(1, height - 1);
-                var citizen = new Citizen(citizenName[i], randomX, randomY, 'C');
-                citizen.Inventory.Add("Nycklar");
-                citizen.Inventory.Add("Mobiltelefon");
-                citizen.Inventory.Add("Plånbok");
-                citizen.Inventory.Add("Klocka");
-                personList.Add(citizen);
-            }
-
-            // Create the thieves
-
-            string[] thiefName = new string[]{
-                "Tommy", "Susie", "Bobby", "Steve", "Vicky",
-                "Danny", "Rita", "Eddie", "Maggie",
-                "Frankie", "Lenny", "Connie", "Ronny", "Lucy",
-                "Harry", "Penny", "Vinny", "Mia", "Johnny", "Gina", "Larry"
-            };
-
-            for (int i = 0; i < thiefNum; i++)
-            {
-                int randomX = random.Next(1, width - 1);
-                int randomY = random.Next(1, height - 1);
-                var thief = new Thief(thiefName[i], randomX, randomY, 'T');
-                personList.Add(thief);
-            }
 
             int[] xPositions = new int[totalGubbar];
             int[] yPositions = new int[totalGubbar];
+            int[] directions = new int[totalGubbar];
 
             //  lista för de senaste händelserna Klar
             List<string> latestEvents = new List<string>();
@@ -97,48 +57,15 @@ namespace TjuvOchPolis
                 yPositions[i] = random.Next(1, height - 1);
                 gubbarPåPositionX[i] = xPositions[i];
                 gubbarPåPositionY[i] = yPositions[i];
+                directions[i] = random.Next(6); // Slumpmässig riktning
             }
 
             while (true)
             {
                 Console.Clear(); // Rensa konsollen för att uppdatera positioner Klar
 
-                // Rita fyrkanten
-                for (int i = 0; i <= width; i++)
-                {
-                    Console.SetCursorPosition(i, 0);
-                    Console.Write("-"); // ritar övre delen 
-                    Console.SetCursorPosition(i, height);
-                    Console.Write("-"); // ritar undre delen 
-                }
-
-                for (int i = 0; i <= height; i++)
-                {
-                    Console.SetCursorPosition(0, i);
-                    Console.Write("|");
-                    Console.SetCursorPosition(width, i);
-                    Console.Write("|");
-                }
-
-                // Rita fängelset
-                Console.WriteLine("");
-                for (int i = 0; i <= prisonWidth; i++)
-
-                {
-                    Console.SetCursorPosition(prisonX + i, prisonY);
-                    Console.Write("-");
-                    Console.SetCursorPosition(prisonX + i, prisonY + prisonHeight);
-                    Console.Write("-");
-
-                }
-
-                for (int i = 0; i <= prisonHeight; i++)
-                {
-                    Console.SetCursorPosition(prisonX, prisonY + i);
-                    Console.Write("|");
-                    Console.SetCursorPosition(prisonX + prisonWidth, prisonY + i);
-                    Console.Write("|");
-                }
+                Draw.DrawCity(width, height);
+                Draw.DrawPrison(prisonX, prisonY, prisonWidth, prisonHeight);
 
                 // Uppdatera och rita alla gubbar
                 for (int i = 0; i < totalGubbar; i++)
@@ -159,13 +86,13 @@ namespace TjuvOchPolis
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                     }
-                    
+
                     person.Draw(xPositions[i], yPositions[i]);
 
                     Console.ForegroundColor = (ConsoleColor)originalForegroundColor;
 
                     // Uppdatera positionen
-                    int direction = random.Next(8);
+                    int direction = directions[i];
                     UpdatePosition(ref xPositions[i], ref yPositions[i], direction, width, height);
 
                     // Uppdatera dictionaries för gubbarnas positioner
@@ -184,7 +111,7 @@ namespace TjuvOchPolis
                             var gubbe2 = personList[j];
                             if (gubbe1 is Police && gubbe2 is Thief)
                             {
-                                string eventDescription = $" {gubbe1.Namn} har fångat tjuven {gubbe2.Namn}!";
+                                string eventDescription = $"{gubbe1.Namn} har fångat tjuven {gubbe2.Namn}!";
                                 latestEvents.Add(eventDescription);
                                 Police police = (Police)gubbe1;
                                 Thief thief = (Thief)gubbe2;
@@ -200,11 +127,14 @@ namespace TjuvOchPolis
                                 thief.Steal(citizen);
 
                             }
-                            else if (gubbe1 is Police && gubbe2 is Citizen)
-                            {
-                                string eventDescription = $" {gubbe1.Namn} säger Hej! till medborgaren {gubbe2.Namn}!";
-                                latestEvents.Add(eventDescription);
-                            }
+
+                            // ta bort detta för att slippa spam?
+
+                            //////else if (gubbe1 is Police && gubbe2 is Citizen)
+                            //////{
+                            //////    string eventDescription = $" {gubbe1.Namn} säger Hej! till medborgaren {gubbe2.Namn}!";
+                            //////    latestEvents.Add(eventDescription);
+                            //////}
                             if (latestEvents.Count > 5)
                             {
                                 latestEvents.RemoveAt(0);
@@ -224,60 +154,45 @@ namespace TjuvOchPolis
                     eventCount++;
                 }
 
-                Thread.Sleep(600);
+                Thread.Sleep(400);
             }
         }
 
-        static void UpdatePosition(ref int x, ref int y, int direction, int width, int height)
-        {
-            // Uppdatera positionen baserat på riktningen
-            switch (direction)
+      // UPPDATERAT DETTA -  EMIL
+            static void UpdatePosition(ref int x, ref int y, int direction, int width, int height)
             {
-                case 0: // Uppåt
-                    if (y > 1)
-                        y--;
-                    break;
-                case 1: // Neråt
-                    if (y < height - 2)
-                        y++;
-                    break;
-                case 2: // Höger
-                    if (x < width - 2)
-                        x++;
-                    break;
-                case 3: // Vänster
-                    if (x > 1)
-                        x--;
-                    break;
-                case 4: // Snedt höger upp
-                    if (y > 1 && x < width - 2)
-                    {
-                        y--;
-                        x++;
-                    }
-                    break;
-                case 5: // Snedt vänster upp
-                    if (y > 1 && x > 1)
-                    {
-                        y--;
-                        x--;
-                    }
-                    break;
-                case 6: // Snedt höger ned
-                    if (y < height - 2 && x < width - 2)
-                    {
-                        y++;
-                        x++;
-                    }
-                    break;
-                case 7: // Snedt vänster ned
-                    if (y < height - 2 && x > 1)
-                    {
-                        y++;
-                        x--;
-                    }
-                    break;
+                // Uppdatera positionen baserat på riktningen
+                switch (direction)
+                {
+                    case 0: // Uppåt
+                        y = (y - 1 + height) % height;
+                        break;
+                    case 1: // Neråt
+                        y = (y + 1) % height;
+                        break;
+                    case 2: // Höger
+                        x = (x + 1) % width;
+                        break;
+                    case 3: // Vänster
+                        x = (x - 1 + width) % width;
+                        break;
+                    case 4: // Snedt höger upp
+                        y = (y - 1 + height) % height;
+                        x = (x + 1) % width;
+                        break;
+                    case 5: // Snedt vänster upp
+                        y = (y - 1 + height) % height;
+                        x = (x - 1 + width) % width;
+                        break;
+                    case 6: // Snedt höger ned
+                        y = (y + 1) % height;
+                        x = (x + 1) % width;
+                        break;
+                    case 7: // Snedt vänster ned
+                        y = (y + 1) % height;
+                        x = (x - 1 + width) % width;
+                        break;
+                }
             }
         }
-    }
 }

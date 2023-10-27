@@ -44,14 +44,16 @@ namespace TjuvOchPolis
                     Inventory.Add(stolenItem);
                 }
 
-                Thread.Sleep(1500);
+                
                 thief.Inventory.Clear();
+                 //Thread.Sleep(1500);
             }
             else
             {
                 //Temp Console.Writeline
                 //Console.WriteLine("Har inget inte gjort något ännu");
             }
+            
         }
     }
 
@@ -78,12 +80,13 @@ namespace TjuvOchPolis
         {
             if (citizen.Inventory.Count > 0)
             {
+                
                 int Item = new Random().Next(citizen.Inventory.Count);
                 string stolenItem = citizen.Inventory[Item];
                 Inventory.Add(stolenItem);
                 citizen.Inventory.RemoveAt(Item);
                 //Console.WriteLine($"Tjuven {Namn} har rånat medborgaren {citizen.Namn} på {stolenItem}");
-                Thread.Sleep(200);
+                Thread.Sleep(1000);
             }
         }
     }
