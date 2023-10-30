@@ -46,6 +46,7 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                 }
                 //Thread.Sleep(1500);
                 thief.Inventory.Clear();
+                thief.PrisonInmate = true;
             }
             else
             {
