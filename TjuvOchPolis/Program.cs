@@ -10,10 +10,9 @@ namespace Tjuv_Polis_MinUtveckling26Okt
         {
             int width = 100; // Bredden på fyrkanten
             int height = 25; // Höjden på fyrkanten
-            int policeNum = 40; // Nummer av police
+            int policeNum = 20; // Nummer av police
             int citizenNum = 40; // Nummer av Citizen
             int thiefNum = 20; // Nummer av Thief 
-            int PoorCitizen = 0;
             int prisonX = width + 3; // X-koordinat för fängelsets övre vänstra hörn
             int prisonY = 1; // Y-koordinat för fängelsets övre vänstra hörn
             int prisonWidth = 15; // Bredden på fängelset
@@ -56,9 +55,9 @@ namespace Tjuv_Polis_MinUtveckling26Okt
             {
                 var citizen = new Citizen(citizenName[i % citizenName.Length], random.Next(1, width - 1), random.Next(1, height - 1), 'C', random.Next(8), false);
                 citizen.Inventory.Add("Nycklar");
-                citizen.Inventory.Add("Mobiltelefon");
-                citizen.Inventory.Add("Plånbok");
-                citizen.Inventory.Add("Klocka");
+                //citizen.Inventory.Add("Mobiltelefon");
+                //citizen.Inventory.Add("Plånbok");
+                //citizen.Inventory.Add("Klocka");
                 personList.Add(citizen);
             }
             string[] thiefName = new string[]
@@ -175,16 +174,9 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                             if (x_Positions[i] > poorHouseX + (poorHouseWidth - 1)) { x_Positions[i] = poorHouseX + 1; }
                             else if (x_Positions[i] < poorHouseX + 1) { x_Positions[i] = poorHouseX + (poorHouseWidth - 1); }
                         }
-                        else
-                        {
-                            UpdatePosition(ref x_Positions[i], ref y_Positions[i], direction);
-                            if (y_Positions[i] > height) { y_Positions[i] = 1; }
-                            else if (y_Positions[i] < 1) { y_Positions[i] = height; }
-                            if (x_Positions[i] > width) { x_Positions[i] = 1; }
-                            else if (x_Positions[i] < 1) { x_Positions[i] = width; }
-                        }
+                        
                         //______Om personen(Tjuven) sitter i fängelset eller inte_____________________________
-                        if (personList[i].PrisonInmate == true)//Om tjuven sitter i fängelset. 
+                        else if (personList[i].PrisonInmate == true)//Om tjuven sitter i fängelset. 
                         {
                             UpdatePosition(ref x_Positions[i], ref y_Positions[i], direction);
                             if (y_Positions[i] > prisonY + (prisonHeight - 1)) { y_Positions[i] = prisonY + 1; }
@@ -273,7 +265,6 @@ namespace Tjuv_Polis_MinUtveckling26Okt
 
                             if (citizen.Inventory.Count == 0)
                             {
-                                PoorCitizen++;
                                 personList[i].PoorHouseInmate = true;
                             }
                         }
