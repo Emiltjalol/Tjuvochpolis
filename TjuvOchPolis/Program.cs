@@ -19,7 +19,7 @@ namespace Tjuv_Polis_MinUtveckling26Okt
             int prisonHeight = 10; // Höjden på fängelset
             int poorHouseX = width + 3; // X-koordinat för fängelsets övre vänstra hörn
             int poorHouseY = 15; // Y-koordinat för fängelsets övre vänstra hörn
-            int poorHouseWidth = 15; // Bredden på fängelset
+            int poorHouseWidth = 40; // Bredden på fängelset
             int poorHouseHeight = 10; // Höjden på fängelset
             int totalPeople = policeNum + citizenNum + thiefNum;
             int num_Of_Prisoners = 0;
@@ -55,9 +55,9 @@ namespace Tjuv_Polis_MinUtveckling26Okt
             {
                 var citizen = new Citizen(citizenName[i % citizenName.Length], random.Next(1, width - 1), random.Next(1, height - 1), 'C', random.Next(8), false);
                 citizen.Inventory.Add("Nycklar");
-                //citizen.Inventory.Add("Mobiltelefon");
-                //citizen.Inventory.Add("Plånbok");
-                //citizen.Inventory.Add("Klocka");
+                citizen.Inventory.Add("Mobiltelefon");
+                citizen.Inventory.Add("Plånbok");
+                citizen.Inventory.Add("Klocka");
                 personList.Add(citizen);
             }
             string[] thiefName = new string[]
@@ -271,14 +271,35 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                     }
 
                     // Skriv ut de senaste händelserna Klar
-                    Console.SetCursorPosition(0, height + 2);
+                    Console.SetCursorPosition(width - 25, height + 2);
                     Console.WriteLine("Senaste händelser:");
                     int eventCount = 1;
                     foreach (var ev in latestEvents)
                     {
-                        Console.SetCursorPosition(0, height + 2 + eventCount);
+                        Console.SetCursorPosition(width - 25, height + 2 + eventCount);
                         Console.WriteLine($"{eventCount}. {ev}");
                         eventCount++;
+                    }
+                    //___Inventory_______
+                    Console.SetCursorPosition(0, height + 2);
+                    Console.WriteLine("Inventory: ");
+                    //for (int i = 0; i < totalPeople; i++) 
+                    //{
+                    //    Console.SetCursorPosition(0, height + 3);
+                    //    Console.WriteLine(personList[i].Inventory.Count);
+                    //}
+                    foreach (Person person in personList)
+                    {
+                       
+                        Console.SetCursorPosition(0, height + 3);
+                        Console.WriteLine($"{person.Namn}'s Inventory:");
+                        //int i = 0;
+                        //foreach (string item in personList[i].Inventory)
+                        //{
+                        //    Console.WriteLine(item);
+                        //    i++;
+                        //}
+                   
                     }
                     Thread.Sleep(200);
                 }
