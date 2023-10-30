@@ -1,37 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace TjuvOchPolis
+namespace Tjuv_Polis_MinUtveckling26Okt
 {
     class Person
     {
         public string Namn { get; set; }
-        public int XCoordinate { get; set; }
-        public int YCoordinate { get; set; }
+        public int X_coord { get; set; }
+        public int Y_coord { get; set; }
         public List<string> Inventory { get; set; }
         public char Symbol { get; set; }
+        public bool PrisonInmate { get; set; }
+        public bool PoorHouseInmate { get; set; }
+        public int Direction { get; set; }
 
-        public void Draw(int x, int y)
-        {
-            Console.SetCursorPosition(x, y);
-            Console.Write(Symbol);
-        }
-
-        public Person(string namn, char symbol)
+        public Person(string namn, char symbol, int direction)
         {
             Namn = namn;
             Inventory = new List<string>();
             Symbol = symbol;
+            Direction = direction;
         }
     }
 
     class Police : Person
     {
-        public Police(string namn, int xcoordinate, int ycoordinate, char symbol) : base(namn, symbol)
+        public Police(string namn, int x_Coord, int y_Coord, char symbol, int direction) : base(namn, symbol, direction)
         {
-            XCoordinate = xcoordinate;
-            YCoordinate = ycoordinate;
+            X_coord = x_Coord;
+            Y_coord = y_Coord;
+            Direction = direction;
         }
         public void CatchThief(Thief thief)
         {
@@ -43,50 +44,48 @@ namespace TjuvOchPolis
                 {
                     Inventory.Add(stolenItem);
                 }
-
-                
+                //Thread.Sleep(1500);
                 thief.Inventory.Clear();
-                 //Thread.Sleep(1500);
             }
             else
             {
                 //Temp Console.Writeline
                 //Console.WriteLine("Har inget inte gjort något ännu");
             }
-            
         }
     }
 
     class Citizen : Person
     {
-        public Citizen(string namn, int xcoordinate, int ycoordinate, char symbol) : base(namn, symbol)
+        public Citizen(string namn, int x_Coord, int y_Coord, char symbol, int direction, bool poorHouseInmate) : base(namn, symbol, direction)
         {
-            XCoordinate = xcoordinate;
-            YCoordinate = ycoordinate;
+            X_coord = x_Coord;
+            Y_coord = y_Coord;
+            Direction = direction;
+            PoorHouseInmate = poorHouseInmate;
         }
     }
 
     class Thief : Person
     {
-        public Thief(string namn, int xcoordinate, int ycoordinate, char symbol) : base(namn, symbol)
+        public Thief(string namn, int x_Coord, int y_Coord, char symbol, bool prisonInmate, int direction) : base(namn, symbol, direction)
         {
-            XCoordinate = xcoordinate;
-            YCoordinate = ycoordinate;
+            X_coord = x_Coord;
+            Y_coord = y_Coord;
+            PrisonInmate = prisonInmate;
+            Direction = direction;
         }
 
-        //behövs fixa /Eric K
 
         public void Steal(Citizen citizen)
         {
             if (citizen.Inventory.Count > 0)
             {
-                
                 int Item = new Random().Next(citizen.Inventory.Count);
                 string stolenItem = citizen.Inventory[Item];
                 Inventory.Add(stolenItem);
                 citizen.Inventory.RemoveAt(Item);
-                //Console.WriteLine($"Tjuven {Namn} har rånat medborgaren {citizen.Namn} på {stolenItem}");
-                Thread.Sleep(1000);
+                //Thread.Sleep(200);
             }
         }
     }
