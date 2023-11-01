@@ -10,9 +10,9 @@ namespace Tjuv_Polis_MinUtveckling26Okt
         {
             int width = 100; // Bredden på fyrkanten
             int height = 25; // Höjden på fyrkanten
-            int policeNum = 20; // Nummer av police
-            int citizenNum = 40; // Nummer av Citizen
-            int thiefNum = 20; // Nummer av Thief 
+            int policeNum = 10; // Nummer av police
+            int citizenNum = 10; // Nummer av Citizen
+            int thiefNum = 10; // Nummer av Thief 
             int prisonX = width + 3; // X-koordinat för fängelsets övre vänstra hörn
             int prisonY = 1; // Y-koordinat för fängelsets övre vänstra hörn
             int prisonWidth = 15; // Bredden på fängelset
@@ -90,6 +90,41 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                     personList[random.Next(totalPeople)].Direction = random.Next(8);
                 }
                 for (int steps = 0; steps < 5; steps++)//Antal steg i samma rikning.
+
+                    //test för att få in nya karaktärer
+                    if (Console.KeyAvailable)
+                    {
+                        int i = 0;
+                        ConsoleKeyInfo keyInfo = Console.ReadKey();
+                        char key = keyInfo.KeyChar;
+                        switch (key)
+                        {
+                            case 'C':
+                            case 'c':
+                                Citizen citizen = new Citizen(citizenName[i % citizenName.Length], random.Next(1, width - 1), random.Next(1, height - 1), 'C', random.Next(8), false);
+                                citizen.Inventory.Add("Nycklar");
+                                citizen.Inventory.Add("Mobiltelefon");
+                                citizen.Inventory.Add("Plånbok");
+                                citizen.Inventory.Add("Klocka");
+                                personList.Add(citizen);
+                                citizenNum++;
+                                break;
+
+                            case 'T':
+                            case 't':
+                                Thief thief = new Thief(thiefName[i % thiefName.Length], random.Next(1, width - 1), random.Next(1, height - 1), 'T', false, random.Next(8));
+                                personList.Add(thief);
+                                num_Of_Thives++;
+                                break;
+
+                            case 'P':
+                            case 'p':
+                                Police police = new Police(policeName[i % policeName.Length], random.Next(1, width - 1), random.Next(1, height - 1), 'P', random.Next(8));
+                                personList.Add(police);
+                                policeNum++;
+                                break;
+                        }
+                    }
                 {
                     Console.Clear();
                     //____Rita staden____________
@@ -295,7 +330,7 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                     if (inventoryRollList > totalPeople - 10) { inventoryRollList = totalPeople - (inventoryRollList + 1); }// 10 är rulllistans längd.
                     else if (inventoryRollList >= totalPeople) { inventoryRollList = 0; }
                    
-                    Thread.Sleep(200);
+                    Thread.Sleep(800);
                 }
             }
         }
