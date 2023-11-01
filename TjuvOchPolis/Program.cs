@@ -25,6 +25,8 @@ namespace Tjuv_Polis_MinUtveckling26Okt
             int num_Of_Prisoners = 0;
             int num_Of_robberies = 0;
             int num_Of_Thives = thiefNum;
+            int num_Of_citizens = citizenNum;
+            int inventoryRollList = 0;
             List<Person> personList = new List<Person>();
             Random random = new Random();
 
@@ -32,38 +34,35 @@ namespace Tjuv_Polis_MinUtveckling26Okt
 
             string[] policeName = new string[]
             {
-                "Polisen Svensson", "Detektiv Johnsson", "Sergeant Davidsson", "Inspektör Willhelmsson", "Kapten Andersson", "Löjtnant Martinsson",
-                "Officer Börjesson", "Detektiv Göransson", "Sergant Carlberg", "Inspektör Nilsson"
+                "Polisen Svensson", "Polisen Johnsson", "Polisen Davidsson", "Polisen Willhelmsson", "Polisen Andersson", "Polisen Martinsson",
+                "Polisen Börjesson", "Polisen Göransson", "Polisen Carlberg", "Polisen Nilsson"
             };
             for (int j = 0; j < policeNum; j++)
             {
                 var police = new Police(policeName[j % policeName.Length], random.Next(1, width - 1), random.Next(1, height - 1), 'P', random.Next(8));
-                police.Inventory.Add("Handbojor");
-                police.Inventory.Add("Bricka");
-                police.Inventory.Add("Pistol");
                 personList.Add(police);
             }
             string[] citizenName = new string[]
             {
-                "John Simonsson", "Jane Karlsson", "Michael Jonsson", "Emily Davidsson", "David Williamsson", "Lisa Andersson",
-                "Sarah Martinsson", "Robert Börjesson", "Maria Klarksson", "William Andersson", "Jennifer Jenssen", "Christoffer Grenborg",
-                "Klara Klausson", "Richard Waldemarsson", "Patricia Tunberg", "Josef Mauritz", "Linda Hallberg", "Thomas Larsson", "Cynthia Garcia",
-                "Charles Rodriguez", "Nancy Scottsson", "Daniel Ljungberg", "Susan Klingberg", "Mattias Wright", "Helene Adamsson",
-                "Kevin Klausson", "Sandra Grenberg", "Andreas Redström", "Maria Cartelberg", "James Hallström", "Daniel Jakobsson"
+                "Medborgare Simonsson", "Medborgare Karlsson", "Medborgare Jonsson", "Medborgare Davidsson", "Medborgare Williamsson", "Medborgare Andersson",
+                "Medborgare Martinsson", "Medborgare Börjesson", "Medborgare Klarksson", "Medborgare Andersson", "Medborgare Jenssen", "Medborgare Grenborg",
+                "Medborgare Klausson", "Medborgare Waldemarsson", "Medborgare Tunberg", "Medborgare Mauritz", "Medborgare Hallberg", "Medborgare Larsson", "Medborgare Garcia",
+                "Medborgare Rodriguez", "Medborgare Scottsson", "Medborgare Ljungberg", "Medborgare Klingberg", "Medborgare Wright", "Medborgare Adamsson",
+                "Medborgare Klausson", "Medborgare Grenberg", "Medborgare Redström", "Medborgare Cartelberg", "Medborgare Hallström", "Medborgare Jakobsson"
             };
             for (int i = 0; i < citizenNum; i++)
             {
                 var citizen = new Citizen(citizenName[i % citizenName.Length], random.Next(1, width - 1), random.Next(1, height - 1), 'C', random.Next(8), false);
                 citizen.Inventory.Add("Nycklar");
-                citizen.Inventory.Add("Mobiltelefon");
+                citizen.Inventory.Add("Mobil");
                 citizen.Inventory.Add("Plånbok");
                 citizen.Inventory.Add("Klocka");
                 personList.Add(citizen);
             }
             string[] thiefName = new string[]
             {
-                "Tommy", "Susie", "Bobby", "Steve", "Vicky", "Danny", "Rita", "Eddie", "Maggie",
-                "Frankie", "Lenny", "Connie", "Ronny", "Lucy", "Harry", "Penny", "Vinny", "Mia", "Johnny", "Gina", "Larry"
+                "Tjuven Tommy", "Tjuven Susie", "Tjuven Bobby", "Tjuven Steve", "Tjuven Vicky", "Tjuven Danny", "Tjuven Rita", "Tjuven Eddie", "Tjuven Maggie",
+                "Tjuven Frankie", "Tjuven Lenny", "Tjuven Connie", "Tjuven Ronny", "Tjuven Lucy", "Tjuven Harry", "Tjuven Penny", "Tjuven Vinny", "Tjuven Mia", "Tjuven Johnny", "Tjuven Gina", "Tjuven Larry"
             };
             for (int i = 0; i < thiefNum; i++)
             {
@@ -174,7 +173,6 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                             if (x_Positions[i] > poorHouseX + (poorHouseWidth - 1)) { x_Positions[i] = poorHouseX + 1; }
                             else if (x_Positions[i] < poorHouseX + 1) { x_Positions[i] = poorHouseX + (poorHouseWidth - 1); }
                         }
-                        
                         //______Om personen(Tjuven) sitter i fängelset eller inte_____________________________
                         else if (personList[i].PrisonInmate == true)//Om tjuven sitter i fängelset. 
                         {
@@ -204,15 +202,15 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                         {
                             if (x_Positions[i] == x_Positions[j] && y_Positions[i] == y_Positions[j])
                             {
-                                var gubbe1 = personList[i];
-                                var gubbe2 = personList[j];
-                                if (gubbe1 is Police && gubbe2 is Thief)
+                                var meet_1 = personList[i];
+                                var meet_2 = personList[j];
+                                if (meet_1 is Police && meet_2 is Thief)
                                 {
-                                    Police police = (Police)gubbe1;
-                                    Thief thief = (Thief)gubbe2;
+                                    Police police = (Police)meet_1;
+                                    Thief thief = (Thief)meet_2;
                                     if (thief.Inventory.Count > 0)
                                     {                                    
-                                        string eventDescription = $"{gubbe1.Namn} har fångat tjuven {gubbe2.Namn}!";
+                                        string eventDescription = $"{meet_1.Namn} har fångat {meet_2.Namn}!";
                                         latestEvents.Add(eventDescription);
                                         personList[j].PrisonInmate = true;
                                         y_Positions[i] = 3;
@@ -223,21 +221,33 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                                     police.CatchThief(thief);
                                 }
                                 // Logik för att identifiera händelser (polis fångar tjuv, tjuv rånar medborgare osv.)
-                                else if (gubbe1 is Citizen && gubbe2 is Thief)
+                                else if (meet_1 is Citizen && meet_2 is Thief)
                                 {
-                                    string eventDescription = $"Tjuven {gubbe2.Namn} har rånat medborgaren {gubbe1.Namn}!";
+                                    string eventDescription = $"{meet_2.Namn} har rånat {meet_1.Namn}!";
                                     latestEvents.Add(eventDescription);
-                                    Citizen citizen = (Citizen)gubbe1;
-                                    Thief thief = (Thief)gubbe2;
+                                    Citizen citizen = (Citizen)meet_1;
+                                    Thief thief = (Thief)meet_2;
                                     thief.Steal(citizen);
                                     num_Of_robberies++;
                                 }
-                                else if (gubbe1 is Police && gubbe2 is Citizen)
+                                else if (meet_1 is Police && meet_2 is Citizen)
                                 {
-                                    string eventDescription = $"{gubbe1.Namn} säger Hej! till medborgaren {gubbe2.Namn}!";
-                                    latestEvents.Add(eventDescription);
+                                    Police police = (Police)meet_1;
+                                    Citizen citizen = (Citizen)meet_2;
+                                    if (citizen.Inventory.Count > 0)
+                                    {
+                                        string eventDescription = $"{meet_1.Namn} säger Hej! till {meet_2.Namn}!";
+                                        latestEvents.Add(eventDescription);
+                                    }
+                                    else
+                                    {
+                                        string eventDescription = $"{meet_1.Namn} Kastar {meet_2.Namn} in i fattighetshemmet!";
+                                        latestEvents.Add(eventDescription);
+                                        citizen.PoorHouseInmate = true;
+                                        num_Of_citizens--;
+                                    }
                                 }
-                                if (latestEvents.Count > 5)
+                                if (latestEvents.Count > 10)
                                 {
                                     latestEvents.RemoveAt(0);
                                 }
@@ -250,57 +260,41 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                     Console.SetCursorPosition(103 + (prisonWidth + 5), 2);
                     Console.WriteLine("Antal tagna tjuvar: " + num_Of_Prisoners);
                     Console.SetCursorPosition(103 + (prisonWidth + 5), 3);
-                    Console.WriteLine($"Medborgare: {citizenNum}");
+                    Console.WriteLine($"Medborgare: {num_Of_citizens}");
                     Console.SetCursorPosition(103 + (prisonWidth + 5), 4);
-                    Console.WriteLine($"tjuvar: {num_Of_Thives}");
+                    Console.WriteLine($"Tjuvar: {num_Of_Thives}");
                     Console.SetCursorPosition(103 + (prisonWidth + 5), 5);
-                    Console.WriteLine($"poliser: {policeNum}");
-
-                    for (int i = 0; i < totalPeople; i++)
-                    {
-                        Person person = personList[i];
-                        if (person is Citizen)
-                        {
-                            var citizen = (Citizen)person;
-
-                            if (citizen.Inventory.Count == 0)
-                            {
-                                personList[i].PoorHouseInmate = true;
-                            }
-                        }
-                    }
+                    Console.WriteLine($"Poliser: {policeNum}");
 
                     // Skriv ut de senaste händelserna Klar
-                    Console.SetCursorPosition(width - 25, height + 2);
+                    Console.SetCursorPosition(width - 15, height + 2);
                     Console.WriteLine("Senaste händelser:");
                     int eventCount = 1;
                     foreach (var ev in latestEvents)
                     {
-                        Console.SetCursorPosition(width - 25, height + 2 + eventCount);
+                        Console.SetCursorPosition(width - 15, height + 2 + eventCount);
                         Console.WriteLine($"{eventCount}. {ev}");
                         eventCount++;
                     }
                     //___Inventory_______
                     Console.SetCursorPosition(0, height + 2);
                     Console.WriteLine("Inventory: ");
-                    //for (int i = 0; i < totalPeople; i++) 
-                    //{
-                    //    Console.SetCursorPosition(0, height + 3);
-                    //    Console.WriteLine(personList[i].Inventory.Count);
-                    //}
-                    foreach (Person person in personList)
+                    Console.SetCursorPosition(0, height + 3);
+                    for (int i = inventoryRollList; i < inventoryRollList + 10; i++)// 10 är rulllistans längd.
                     {
-                       
-                        Console.SetCursorPosition(0, height + 3);
-                        Console.WriteLine($"{person.Namn}'s Inventory:");
-                        //int i = 0;
-                        //foreach (string item in personList[i].Inventory)
-                        //{
-                        //    Console.WriteLine(item);
-                        //    i++;
-                        //}
-                   
+                        Console.Write($"{personList[i].Namn}: ");
+                        int inventoryCount = 0;
+                        foreach (string item in personList[i].Inventory)
+                        {
+                            Console.Write(" " + item);
+                            inventoryCount++;
+                        }
+                        Console.WriteLine();
                     }
+                    inventoryRollList++;
+                    if (inventoryRollList > totalPeople - 10) { inventoryRollList = totalPeople - (inventoryRollList + 1); }// 10 är rulllistans längd.
+                    else if (inventoryRollList >= totalPeople) { inventoryRollList = 0; }
+                   
                     Thread.Sleep(200);
                 }
             }
