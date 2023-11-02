@@ -8,11 +8,13 @@ namespace Tjuv_Polis_MinUtveckling26Okt
     {
         static void Main(string[] args)
         {
+            List<Person> personsList = new List<Person>();//Alla gubbar
+            List<string> latestEvents = new List<string>(); //lista för de senaste händelserna.
             int width = 100; // Bredden på fyrkanten
             int height = 25; // Höjden på fyrkanten
-            int policeNum = 20; // Nummer av police
-            int citizenNum = 20; // Nummer av Citizen
-            int thiefNum = 20; // Nummer av Thief 
+            int policeNum = 7; // Nummer av police
+            int citizenNum = 7; // Nummer av Citizen
+            int thiefNum = 7; // Nummer av Thief 
             int prisonX = width + 3; // X-koordinat för fängelsets övre vänstra hörn
             int prisonY = 1; // Y-koordinat för fängelsets övre vänstra hörn
             int prisonWidth = 15; // Bredden på fängelset
@@ -21,14 +23,13 @@ namespace Tjuv_Polis_MinUtveckling26Okt
             int poorHouseY = 15; // Y-koordinat för fängelsets övre vänstra hörn
             int poorHouseWidth = 40; // Bredden på fängelset
             int poorHouseHeight = 10; // Höjden på fängelset
-            int totalPeople = policeNum + citizenNum + thiefNum;
+            int totalPeople = policeNum + citizenNum + thiefNum; 
             int numOfRobberies = 0;
             int thivesInPrison = 0;
             int citizensInPoorHouse = 0;
             int inventoryRollList = 0;
-            List<Person> personList = new List<Person>();
+            int inventoryRollDelay = 0;
             Random random = new Random();
-
             Console.CursorVisible = false; // Dölj pekaren
 
             string[] policeName = new string[]
@@ -36,10 +37,10 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                 "Polisen Svensson", "Polisen Johnsson", "Polisen Davidsson", "Polisen Willhelmsson", "Polisen Andersson", "Polisen Martinsson",
                 "Polisen Börjesson", "Polisen Göransson", "Polisen Carlberg", "Polisen Nilsson"
             };
-            for (int j = 0; j < policeNum; j++)
+            for (int i = 0; i < policeNum; i++)
             {
-                var police = new Police(policeName[j % policeName.Length], random.Next(1, width - 1), random.Next(1, height - 1), 'P', random.Next(8));
-                personList.Add(police);
+                var police = new Police(policeName[i % policeName.Length], random.Next(1, width - 1), random.Next(1, height - 1), 'P', random.Next(8));
+                personsList.Add(police);
             }
             string[] citizenName = new string[]
             {
@@ -56,7 +57,7 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                 citizen.Inventory.Add("Mobil");
                 citizen.Inventory.Add("Plånbok");
                 citizen.Inventory.Add("Klocka");
-                personList.Add(citizen);
+                personsList.Add(citizen);
             }
             string[] thiefName = new string[]
             {
@@ -66,30 +67,25 @@ namespace Tjuv_Polis_MinUtveckling26Okt
             for (int i = 0; i < thiefNum; i++)
             {
                 var thief = new Thief(thiefName[i % citizenName.Length], random.Next(1, width - 1), random.Next(1, height - 1), 'T', false, random.Next(8));
-                personList.Add(thief);
-            }
-
-            //  lista för de senaste händelserna.
-            List<string> latestEvents = new List<string>();
-
-            // Placera gubbarnas positioner i 2 arrayer.
-            int[] x_Positions = new int[totalPeople];
-            int[] y_Positions = new int[totalPeople];
-            for (int i = 0; i < totalPeople; i++)
-            {
-                x_Positions[i] = personList[i].X_coord;
-                y_Positions[i] = personList[i].Y_coord;
+                personsList.Add(thief);
             }
 
             while (true)
             {
-
+                totalPeople = policeNum + citizenNum + thiefNum;
+                int[] x_Positions = new int[totalPeople];
+                int[] y_Positions = new int[totalPeople];
+                for (int i = 0; i < totalPeople; i++)
+                {
+                    x_Positions[i] = personsList[i].X_coord;
+                    y_Positions[i] = personsList[i].Y_coord;
+                }
                 for (int i = 0; i < 10; i++) //Antal gubbar som får ny riktning denna sekvens.
                 {
-                    personList[random.Next(totalPeople)].Direction = random.Next(8);
+                    personsList[random.Next(totalPeople)].Direction = random.Next(8);
                 }
                 for (int steps = 0; steps < 5; steps++)//Antal steg i samma rikning.
-
+                { 
                     //test för att få in nya karaktärer
                     if (Console.KeyAvailable)
                     {
@@ -100,39 +96,29 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                         {
                             case 'C':
                             case 'c':
+                                citizenNum++;
                                 Citizen citizen = new Citizen(citizenName[i % citizenName.Length], random.Next(1, width - 1), random.Next(1, height - 1), 'C', random.Next(8), false);
                                 citizen.Inventory.Add("Nycklar");
                                 citizen.Inventory.Add("Mobiltelefon");
                                 citizen.Inventory.Add("Plånbok");
                                 citizen.Inventory.Add("Klocka");
-                                personList.Add(citizen);
-                                citizenNum++;
-                                citizensInPoorHouse++;
+                                personsList.Add(citizen);
                                 break;
-
                             case 'T':
                             case 't':
-                                Thief thief = new Thief(thiefName[i % thiefName.Length], random.Next(1, width - 1), random.Next(1, height - 1), 'T', false, random.Next(8));
-                                personList.Add(thief);
                                 thiefNum++;
-                                thivesInPrison++;
+                                Thief thief = new Thief(thiefName[i % thiefName.Length], random.Next(1, width - 1), random.Next(1, height - 1), 'T', false, random.Next(8));
+                                personsList.Add(thief);
                                 break;
-
                             case 'P':
                             case 'p':
-                                
-                                Police police = new Police(policeName[i % policeName.Length], random.Next(1, width - 1), random.Next(1, height - 1), 'P', random.Next(8));
-                                personList.Add(police);
-                                for (int j = 0; j < totalPeople; j++)
-                                {
-                                    x_Positions[j] = personList[j].X_coord;
-                                    y_Positions[j] = personList[j].Y_coord;
-                                }
                                 policeNum++;
+                                Police police = new Police(policeName[i % policeName.Length], random.Next(1, width - 1), random.Next(1, height - 1), 'P', random.Next(8));
+                                personsList.Add(police);
                                 break;
                         }
                     }
-                {
+                
                     Console.Clear();
                     //____Rita staden____________
                     for (int i = 0; i <= width; i++)
@@ -152,7 +138,7 @@ namespace Tjuv_Polis_MinUtveckling26Okt
 
                     //____Rita fängelset_________________
                     Console.WriteLine("");
-                    Console.SetCursorPosition(prisonX + 5, 0);
+                    Console.SetCursorPosition(prisonX + 3, 0);
                     Console.Write("FÄNGELSET");
                     for (int i = 0; i <= prisonWidth; i++)
                     {
@@ -170,7 +156,7 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                     }
                     //____Rita fattighuset_________________
                     Console.WriteLine("");
-                    Console.SetCursorPosition(poorHouseX + 5, poorHouseY - 1);
+                    Console.SetCursorPosition(poorHouseX + 3, poorHouseY - 1);
                     Console.Write("FATTIGHUSET");
                     for (int i = 0; i <= poorHouseWidth; i++)
                     {
@@ -190,9 +176,9 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                     //________Uppdatera och rita alla gubbar______________
                     for (int i = 0; i < totalPeople; i++)
                     {
-                        int direction = personList[i].Direction;
+                        int direction = personsList[i].Direction;
 
-                        Person person = personList[i];
+                        Person person = personsList[i];
                         int originalForegroundColor = (int)Console.ForegroundColor; // Spara den ursprungliga färgen
                         if (person is Police)
                         {
@@ -207,7 +193,7 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                             Console.ForegroundColor = ConsoleColor.Red;
                         }
                         //______Om personen(Citizen) sitter i fattighuset eller inte_____________________________
-                        if (personList[i].PoorHouseInmate == true)//Om tjuven sitter i fängelset. 
+                        if (personsList[i].PoorHouseInmate == true)//Om tjuven sitter i fängelset. 
                         {
                             UpdatePosition(ref x_Positions[i], ref y_Positions[i], direction);
                             if (y_Positions[i] > poorHouseY + (poorHouseHeight - 1)) { y_Positions[i] = poorHouseY + 1; }
@@ -216,7 +202,7 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                             else if (x_Positions[i] < poorHouseX + 1) { x_Positions[i] = poorHouseX + (poorHouseWidth - 1); }
                         }
                         //______Om personen(Tjuven) sitter i fängelset eller inte_____________________________
-                        else if (personList[i].PrisonInmate == true)//Om tjuven sitter i fängelset. 
+                        else if (personsList[i].PrisonInmate == true)//Om tjuven sitter i fängelset. 
                         {
                             UpdatePosition(ref x_Positions[i], ref y_Positions[i], direction);
                             if (y_Positions[i] > prisonY + (prisonHeight - 1)) { y_Positions[i] = prisonY + 1; }
@@ -233,7 +219,7 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                             else if (x_Positions[i] < 1) { x_Positions[i] = width; }
                         }
                         Console.SetCursorPosition(x_Positions[i], y_Positions[i]);
-                        Console.Write(personList[i].Symbol);
+                        Console.Write(personsList[i].Symbol);
                         Console.ForegroundColor = (ConsoleColor)originalForegroundColor;
                     }
 
@@ -244,8 +230,8 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                         {
                             if (x_Positions[i] == x_Positions[j] && y_Positions[i] == y_Positions[j])
                             {
-                                var meet_1 = personList[i];
-                                var meet_2 = personList[j];
+                                var meet_1 = personsList[i];
+                                var meet_2 = personsList[j];
                                 if (meet_1 is Police && meet_2 is Thief)
                                 {
                                     Police police = (Police)meet_1;
@@ -254,11 +240,10 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                                     {                                    
                                         string eventDescription = $"{meet_1.Namn} har fångat {meet_2.Namn}!";
                                         latestEvents.Add(eventDescription);
-                                        personList[j].PrisonInmate = true;
+                                        personsList[j].PrisonInmate = true;
                                         y_Positions[i] = 3;
                                         x_Positions[j] = 106;
                                         thivesInPrison++;
-                                      
                                     }
                                     police.CatchThief(thief);
                                 }
@@ -320,26 +305,35 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                         Console.WriteLine($"{eventCount}. {ev}");
                         eventCount++;
                     }
-                    //___Inventory_______
+                    //___Inventory______________________________
                     Console.SetCursorPosition(0, height + 2);
                     Console.WriteLine("Inventory: ");
                     Console.SetCursorPosition(0, height + 3);
                     for (int i = inventoryRollList; i < inventoryRollList + 10; i++)// 10 är rulllistans längd.
                     {
-                        Console.Write($"{personList[i].Namn}: ");
+                        Console.Write($"{personsList[i].Namn}: ");
                         int inventoryCount = 0;
-                        foreach (string item in personList[i].Inventory)
+                        foreach (string item in personsList[i].Inventory)
                         {
                             Console.Write(" " + item);
                             inventoryCount++;
                         }
                         Console.WriteLine();
+                        if (i == totalPeople) { i = 0; }
                     }
-                    inventoryRollList++;
+                    //____För att bromsa rullistan 3 sekvenser______
+                    inventoryRollDelay++;
+                    if (inventoryRollDelay == 2) { inventoryRollList++; inventoryRollDelay = 0; }
+                    //____För att börja om rullistan________
                     if (inventoryRollList > totalPeople - 10) { inventoryRollList = totalPeople - (inventoryRollList + 1); }// 10 är rulllistans längd.
                     else if (inventoryRollList >= totalPeople) { inventoryRollList = 0; }
                    
                     Thread.Sleep(200);
+                }
+                for (int i = 0; i < totalPeople; i++)
+                {
+                      personsList[i].X_coord = x_Positions[i];
+                      personsList[i].Y_coord = y_Positions[i];
                 }
             }
         }
