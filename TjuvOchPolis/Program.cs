@@ -42,8 +42,10 @@ namespace Tjuv_Polis_MinUtveckling26Okt
             //Gör personer.
             string[] policeName = new string[]
             {
-                "Polisen Svensson", "Polisen Johnsson", "Polisen Davidsson", "Polisen Willhelmsson", "Polisen Andersson", "Polisen Martinsson",
-                "Polisen Börjesson", "Polisen Göransson", "Polisen Carlberg", "Polisen Nilsson"
+                "Polisen Svensson", "Polisen Johnsson", "Polisen Davidsson", "Polisen Willhelmsson", "Polisen Andersson", "Polisen Martinsson", "Polisen Börjesson", "Polisen Göransson", "Polisen Carlberg", "Polisen Nilsson",
+                "Polisen Falk", "Polisen Johnson", "Polisen Eriksen", "Polisen Olofsson", "Polisen Lindberg", "Polisen Henriksson", "Polisen Andersson", "Polisen Mårtensson", "Polisen Bergqvist", "Polisen Magnusson", "Polisen Larsson",
+                "Polisen Persson", "Polisen Eriksson", "Polisen Karlsson", "Polisen Johansson", "Polisen Bergström", "Polisen Gustafsson", "Polisen Lundqvist", "Polisen Nyström", "Polisen Holm", "Polisen Ahlström",
+                "Polisen Larsson", "Polisen Sjöberg", "Polisen Andersson", "Polisen Gustavsson", "Polisen Wallin", "Polisen Karlberg", "Polisen Bergman", "Polisen Lindström", "Polisen Persson", "Polisen Sandberg"
             };
             for (int i = 0; i < policeNum; i++)
             {
