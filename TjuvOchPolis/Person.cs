@@ -16,7 +16,6 @@ namespace Tjuv_Polis_MinUtveckling26Okt
         public bool PrisonInmate { get; set; }
         public bool PoorHouseInmate { get; set; }
         public int Direction { get; set; }
-
         public Person(string name, char symbol, int direction)
         {
             Name = name;
@@ -34,20 +33,39 @@ namespace Tjuv_Polis_MinUtveckling26Okt
             Y_coord = y_Coord;
             Direction = direction;
         }
-        public void CatchThief(Thief thief)
+        public void CatchThief(Person meet_1, Person meet_2, List<Person> personsList, List<string> latestEvents, int[] y_Positions, int[] x_Positions, ref int thivesInPrison, int j, int i)
         {
-            if (thief.Inventory.Count > 0)
+            if (meet_1 is Police && meet_2 is Thief)
             {
-                foreach (string stolenItem in thief.Inventory)
+
+                if (meet_2.Inventory.Count > 0)
                 {
-                    Inventory.Add(stolenItem);
+                    string eventDescription = $"{meet_1.Name} har fångat {meet_2.Name}!";
+                    latestEvents.Add(eventDescription);
+                    personsList[j].PrisonInmate = true;
+                    y_Positions[i] = 3;
+                    x_Positions[j] = 106;
+                    thivesInPrison++;
+                    foreach (string stolenItem in meet_2.Inventory)
+                    {
+                        Inventory.Add(stolenItem);
+                    }
+                    meet_2.Inventory.Clear();
+                    meet_2.PrisonInmate = true;
+                    meet_2.Inventory.Add("FÄNGELSET");
                 }
-                thief.Inventory.Clear();
-                thief.PrisonInmate = true;
-                thief.Inventory.Add("FÄNGELSET");
-                Thread.Sleep(1500);
             }
-           
+        }
+        public void AdmitToPoorHouse(Person meet_1, Person meet_2, List<string> latestEvents, ref int citizenInPoorHouse)
+        {
+            if (meet_2.Inventory.Count == 0)
+            {
+                string eventDescription = $"{meet_1.Name} Kastar {meet_2.Name} i fattighuset!";
+                latestEvents.Add(eventDescription);
+                meet_2.PoorHouseInmate = true;
+                citizenInPoorHouse++;
+                meet_2.Inventory.Add("FATTIGHUSET");
+            }
         }
     }
     class Citizen : Person
@@ -69,15 +87,19 @@ namespace Tjuv_Polis_MinUtveckling26Okt
             PrisonInmate = prisonInmate;
             Direction = direction;
         }
-        public void Steal(Citizen citizen)
+        public void Steal(Person meet_1, Person meet_2, List<string> latestEvents, ref int numOfRobberies)
         {
+            Citizen citizen = (Citizen)meet_1;
+
             if (citizen.Inventory.Count > 0)
             {
+                string eventDescription = $"{meet_2.Name} har rånat {meet_1.Name}!";
+                latestEvents.Add(eventDescription);
+                numOfRobberies++;
                 int Item = new Random().Next(citizen.Inventory.Count);
                 string stolenItem = citizen.Inventory[Item];
                 Inventory.Add(stolenItem);
                 citizen.Inventory.RemoveAt(Item);
-                Thread.Sleep(1500);
             }
         }
     }
