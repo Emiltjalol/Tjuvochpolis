@@ -91,7 +91,6 @@ namespace Tjuv_Polis_MinUtveckling26Okt
         public void Steal(Person meet_1, Person meet_2, List<string> latestEvents, ref int numOfRobberies, ref int eventCounterNr)
         {
             Citizen citizen = (Citizen)meet_1;
-
             if (citizen.Inventory.Count > 0)
             {
                 string eventDescription = $"{eventCounterNr}. {meet_2.Name} har rånat {meet_1.Name}!";

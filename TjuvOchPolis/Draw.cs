@@ -48,7 +48,6 @@ namespace TjuvOchPolis
         }
         public static void DrawPoorHouse(int poorHouseX, int poorHouseY, int poorHouseWidth, int poorHouseHeight)
         {
-
             Console.WriteLine("");
             Console.SetCursorPosition(poorHouseX + 3, poorHouseY - 1);
             Console.Write("FATTIGHUSET");
@@ -93,7 +92,7 @@ namespace TjuvOchPolis
                 "Polisen Bergström", "Polisen Gustafsson", "Polisen Lundqvist", "Polisen Nyström", "Polisen Holm",
                 "Polisen Ahlström", "Polisen Larsson", "Polisen Sjöberg", "Polisen Andersson", "Polisen Gustavsson",
                 "Polisen Wallin", "Polisen Karlberg", "Polisen Bergman", "Polisen Lindström", "Polisen Persson", "Polisen Sandberg"
-                };
+            };
             private static readonly string[] CitizenNames = {
                 "Medborgare Simonsson", "Medborgare Karlsson", "Medborgare Jonsson", "Medborgare Davidsson", "Medborgare Williamsson",
                 "Medborgare Andersson", "Medborgare Martinsson", "Medborgare Börjesson", "Medborgare Klarksson", "Medborgare Andersson",
@@ -105,7 +104,7 @@ namespace TjuvOchPolis
                 "Medborgare Svensson", "Medborgare Söderström", "Medborgare Johansson", "Medborgare Holmberg", "Medborgare Pettersson",
                 "Medborgare Olofsson", "Medborgare Berglund", "Medborgare Gustafsson", "Medborgare Ekström", "Medborgare Eriksson",
                 "Medborgare Malmström", "Medborgare Forsberg", "Medborgare Nordström", "Medborgare Öberg", "Medborgare Isaksson"
-                };
+            };
             private static readonly string[] ThiefNames = {
               "Tjuven Tommy", "Tjuven Susie", "Tjuven Bobby", "Tjuven Steve", "Tjuven Vicky",
                 "Tjuven Danny", "Tjuven Rita", "Tjuven Eddie", "Tjuven Maggie", "Tjuven Frankie",
@@ -113,37 +112,36 @@ namespace TjuvOchPolis
                 "Tjuven Penny", "Tjuven Vinny", "Tjuven Mia", "Tjuven Johnny", "Tjuven Gina",
                 "Tjuven Larry", "Tjuven Freddy", "Tjuven Sally", "Tjuven Tony", "Tjuven Wendy",
                 "Tjuven Mickey", "Tjuven Cindy", "Tjuven Bobby", "Tjuven Rosie", "Tjuven Joey"
-                };
+            };
 
-            public static List<Police> CreatePolice(List<Person> personsList, Random random, int cityWidth, int cityHeight, ref int P)
+            public static List<Police> CreatePolice(List<Person> personsList, Random random, int cityWidth, int cityHeight, ref int policeNameNr)
             {
                 var policeList = new List<Police>();
-                Police police = new Police(PoliceNames[P % PoliceNames.Length], random.Next(1, cityWidth - 1), random.Next(1, cityHeight - 1), 'P', random.Next(8));
+                Police police = new Police(PoliceNames[policeNameNr % PoliceNames.Length], random.Next(1, cityWidth - 1), random.Next(1, cityHeight - 1), 'P', random.Next(8));
                 personsList.Add(police);
                 policeList.Add(police);
-                P++;
+                policeNameNr++;
                 return policeList;
             }
-            public static List<Citizen> CreateCitizens(List<Person> personsList, Random random, int cityWidth, int cityHeight, ref int C)
+            public static List<Citizen> CreateCitizens(List<Person> personsList, Random random, int cityWidth, int cityHeight, ref int citizenNameNr)
             {
-                var citizenList = new List<Citizen>();
-
-                Citizen citizen = new Citizen(CitizenNames[C % CitizenNames.Length], random.Next(1, cityWidth - 1), random.Next(1, cityHeight - 1), 'C', random.Next(8), false);
+                var citizensList = new List<Citizen>();
+                Citizen citizen = new Citizen(CitizenNames[citizenNameNr % CitizenNames.Length], random.Next(1, cityWidth - 1), random.Next(1, cityHeight - 1), 'C', random.Next(8), false);
                 citizen.Inventory.Add("Nycklar");
                 citizen.Inventory.Add("Mobil");
                 citizen.Inventory.Add("Plånbok");
                 citizen.Inventory.Add("Klocka");
                 personsList.Add(citizen);
-                C++;
-                return citizenList;
+                citizenNameNr++;
+                return citizensList;
             }
-            public static List<Thief> CreateThieves(List<Person> personsList, Random random, int cityWidth, int cityHeight, ref int T)
+            public static List<Thief> CreateThieves(List<Person> personsList, Random random, int cityWidth, int cityHeight, ref int thiefNameNr)
             {
-                var thiefList = new List<Thief>();
-                Thief thief = new Thief(ThiefNames[T % ThiefNames.Length], random.Next(1, cityWidth - 1), random.Next(1, cityHeight - 1), 'T', false, random.Next(8));
+                var thievesList = new List<Thief>();
+                Thief thief = new Thief(ThiefNames[thiefNameNr % ThiefNames.Length], random.Next(1, cityWidth - 1), random.Next(1, cityHeight - 1), 'T', false, random.Next(8));
                 personsList.Add(thief);
-                T++;
-                return thiefList;
+                thiefNameNr++;
+                return thievesList;
             }
         }
     }

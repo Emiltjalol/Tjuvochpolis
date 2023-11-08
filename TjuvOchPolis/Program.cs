@@ -34,25 +34,23 @@ namespace Tjuv_Polis_MinUtveckling26Okt
             int inventoryStepCount = 0;
             int eventCounterNr = 1;
             bool autoScroll = true;
-            bool eventSleep = false;
             Random random = new Random();
             Console.CursorVisible = false;
             //Gör personer.
-            int C = 0;
-            int T = 0;
-            int P = 0;
+            int citizenNameNr = 0;
+            int thiefNameNr = 0;
+            int policeNameNr = 0;
             for (int i = 0; i < policeNum; i++)
             {
-                CreatePerson.CreatePolice(personsList, random, cityWidth, cityHeight, ref P);
+                CreatePerson.CreatePolice(personsList, random, cityWidth, cityHeight, ref policeNameNr);
             }
             for (int i = 0; i < citizenNum; i++)
             {
-                CreatePerson.CreateCitizens(personsList, random, cityWidth, cityHeight, ref C);
-
+                CreatePerson.CreateCitizens(personsList, random, cityWidth, cityHeight, ref citizenNameNr);
             }
             for (int i = 0; i < thiefNum; i++)
             {
-                CreatePerson.CreateThieves(personsList, random, cityWidth, cityHeight, ref T);
+                CreatePerson.CreateThieves(personsList, random, cityWidth, cityHeight, ref thiefNameNr);
             }
             while (true)
             {
@@ -78,15 +76,14 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                     {
                         case 'C':
                             citizenNum++;
-                            CreatePerson.CreateCitizens(personsList, random, cityWidth, cityHeight, ref C);
+                            CreatePerson.CreateCitizens(personsList, random, cityWidth, cityHeight, ref citizenNameNr);
                             break;
                         case 'T':
-                            CreatePerson.CreateThieves(personsList, random, cityWidth, cityHeight, ref T);
+                            CreatePerson.CreateThieves(personsList, random, cityWidth, cityHeight, ref thiefNameNr);
                             thiefNum++;
                             break;
                         case 'P':
-                            
-                            CreatePerson.CreatePolice(personsList, random, cityWidth, cityHeight, ref T);
+                            CreatePerson.CreatePolice(personsList, random, cityWidth, cityHeight, ref policeNameNr);
                             policeNum++;
                             break;
                         case 'A':
@@ -105,8 +102,8 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                             break;
                     }
                 }
-                //Ritar upp allt.
                 Console.Clear();
+                //Ritar upp allt.
                 Draw.DrawCity(cityWidth, cityHeight);
                 Draw.DrawPrison(prisonPosX, prisonPosY, prisonWidth, prisonHeight);
                 Draw.DrawPoorHouse(poorHousePosX, poorHousePosY, poorHouseWidth, poorHouseHeight);
@@ -161,22 +158,16 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                             {
                                 Police police = (Police)meet_1;
                                 police.CatchThief(meet_1, meet_2, personsList, latestEvents, y_Positions, x_Positions, ref thivesInPrison, j, i, ref eventCounterNr);
-                                eventSleep = true;
                             }
                             else if (meet_1 is Citizen && meet_2 is Thief)
                             {
                                 Thief thief = (Thief)meet_2;
                                 thief.Steal(meet_1, meet_2, latestEvents, ref numOfRobberies, ref eventCounterNr);
-                                eventSleep = true;
                             }
                             else if (meet_1 is Police && meet_2 is Citizen)
                             {
                                 Police police = (Police)meet_1;
                                 police.AdmitToPoorHouse(meet_1, meet_2, latestEvents, ref citizensInPoorHouse, ref eventCounterNr);
-                                if (meet_2.Inventory.Count == 0)
-                                {
-                                    eventSleep = true;
-                                }
                             }
                         }
                     }
@@ -195,12 +186,12 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                     {
                         Console.Write(" " + item);
                     }
-                    inventoryCount++;                    
+                    inventoryCount++;
                     if (inventoryCount >= totalPeople) { inventoryCount = 0; }
                     Console.WriteLine();
                 }
                 inventoryCount = inventoryStepCount;
-                if (autoScroll == true) 
+                if (autoScroll == true)
                 {
                     if (inventoryRollDelay < 4) { inventoryRollDelay++; }
                     if (inventoryRollDelay == 3)
@@ -224,16 +215,6 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                         Console.WriteLine($"{latestEvents[index]}");
                     }
                 }
-                //Hastigheten ifall något händer
-                //if (eventSleep == true)
-                //{
-                //    Thread.Sleep(1500);
-                //    eventSleep = false;
-                //}
-                //else
-                //{
-                //    Thread.Sleep(400);
-                //}
                 Thread.Sleep(400);
                 for (int i = 0; i < totalPeople; i++)//Sparar dom nya positionerna i Arrayerna.
                 {
