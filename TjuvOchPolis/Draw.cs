@@ -24,7 +24,6 @@ namespace TjuvOchPolis
                 Console.SetCursorPosition(width + 1, i);
                 Console.Write("|");
             }
-
         }
         public static void DrawPrison(int prisonX, int prisonY, int prisonWidth, int prisonHeight)
         {

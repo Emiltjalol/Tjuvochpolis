@@ -32,6 +32,7 @@ namespace Tjuv_Polis_MinUtveckling26Okt
             int citizensInPoorHouse = 0;
             int inventoryRollDelay = 0;
             int inventoryStepCount = 0;
+            int eventCounterNr = 1;
             bool autoScroll = true;
             bool eventSleep = false;
             Random random = new Random();
@@ -126,12 +127,13 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                             break;
                         case 'W'://Scrorlla Inventory uppåt.
                             if (autoScroll == true) { autoScroll = false; }
-                            if (inventoryStepCount > 0) { inventoryStepCount--; inventoryStepCount--; }
+                            if (inventoryStepCount > 0) { inventoryStepCount = inventoryStepCount - 2; }
+                            else if (inventoryStepCount == 0) { inventoryStepCount = totalPeople - 1; }
                             break;
                         case 'S'://Scrorlla Inventory nedåt.
                             if (autoScroll == true) { autoScroll = false; }
-                            if (inventoryStepCount == totalPeople - 2) {  inventoryStepCount++; }
-                            else if (inventoryStepCount < totalPeople - 5) { inventoryStepCount++; inventoryStepCount++; }
+                            if (inventoryStepCount < totalPeople - 1) { inventoryStepCount = inventoryStepCount + 2; }
+                            else if (inventoryStepCount == totalPeople - 1) { inventoryStepCount = 0; }
                             break;
                     }
                 }
@@ -145,24 +147,16 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                 {
                     int direction = personsList[i].Direction;
                     Person person = personsList[i];
+                    
                     int originalForegroundColor = (int)Console.ForegroundColor;
-                    if (person is Police)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Blue;
-                    }
-                    else if (person is Citizen)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                    }
-                    else if (person is Thief)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                    }
-                    //Updaterar positioner till alla personer i staden, fängelset och fattighuset.
-                    //Så att personerna kommer ut i andra änden.
+                    if (person is Police) { Console.ForegroundColor = ConsoleColor.Blue; }
+                    else if (person is Citizen) { Console.ForegroundColor = ConsoleColor.Green; }
+                    else if (person is Thief) { Console.ForegroundColor = ConsoleColor.Red; }
+                    Helper.UpdatePosition(ref x_Positions[i], ref y_Positions[i], direction);
+                    //Uppdaterar positioner till alla personer i staden, fängelset och fattighuset.
+                    //Gör så att personerna kommer ut i andra änden av spelytorna.
                     if (personsList[i].PoorHouseInmate == true)
                     {
-                        UpdatePosition(ref x_Positions[i], ref y_Positions[i], direction);
                         if (y_Positions[i] > poorHousePosY + (poorHouseHeight - 1)) { y_Positions[i] = poorHousePosY + 1; }
                         else if (y_Positions[i] < poorHousePosY + 1) { y_Positions[i] = poorHousePosY + (poorHouseHeight - 1); }
                         if (x_Positions[i] > poorHousePosX + (poorHouseWidth - 1)) { x_Positions[i] = poorHousePosX + 1; }
@@ -170,7 +164,6 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                     }
                     else if (personsList[i].PrisonInmate == true)
                     {
-                        UpdatePosition(ref x_Positions[i], ref y_Positions[i], direction);
                         if (y_Positions[i] > prisonPosY + (prisonHeight - 1)) { y_Positions[i] = prisonPosY + 1; }
                         else if (y_Positions[i] < prisonPosY + 1) { y_Positions[i] = prisonPosY + (prisonHeight - 1); }
                         if (x_Positions[i] > prisonPosX + (prisonWidth - 1)) { x_Positions[i] = prisonPosX + 1; }
@@ -178,7 +171,6 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                     }
                     else
                     {
-                        UpdatePosition(ref x_Positions[i], ref y_Positions[i], direction);
                         if (y_Positions[i] > cityHeight) { y_Positions[i] = 1; }
                         else if (y_Positions[i] < 1) { y_Positions[i] = cityHeight; }
                         if (x_Positions[i] > cityWidth) { x_Positions[i] = 1; }
@@ -188,7 +180,7 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                     Console.Write(personsList[i].Symbol);
                     Console.ForegroundColor = (ConsoleColor)originalForegroundColor;
                 }
-                // Kontrollera om flera gubbar befinner sig på samma position.
+                //Kontrollera om flera gubbar befinner sig på samma position.
                 for (int i = 0; i < totalPeople; i++)
                 {
                     for (int j = i + 1; j < totalPeople; j++)
@@ -200,19 +192,19 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                             if (meet_1 is Police && meet_2 is Thief)
                             {
                                 Police police = (Police)meet_1;
-                                police.CatchThief(meet_1, meet_2, personsList, latestEvents, y_Positions, x_Positions, ref thivesInPrison, j, i);
+                                police.CatchThief(meet_1, meet_2, personsList, latestEvents, y_Positions, x_Positions, ref thivesInPrison, j, i, ref eventCounterNr);
                                 eventSleep = true;
                             }
                             else if (meet_1 is Citizen && meet_2 is Thief)
                             {
                                 Thief thief = (Thief)meet_2;
-                                thief.Steal(meet_1, meet_2, latestEvents, ref numOfRobberies);
+                                thief.Steal(meet_1, meet_2, latestEvents, ref numOfRobberies, ref eventCounterNr);
                                 eventSleep = true;
                             }
                             else if (meet_1 is Police && meet_2 is Citizen)
                             {
                                 Police police = (Police)meet_1;
-                                police.AdmitToPoorHouse(meet_1, meet_2, latestEvents, ref citizensInPoorHouse);
+                                police.AdmitToPoorHouse(meet_1, meet_2, latestEvents, ref citizensInPoorHouse, ref eventCounterNr);
                                 if (meet_2.Inventory.Count == 0)
                                 {
                                     eventSleep = true;
@@ -221,47 +213,47 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                         }
                     }
                 }
+                //Inventory listan.
+                Console.SetCursorPosition(0, cityHeight + 2);
+                Console.WriteLine("upp[W] ned[S] auto[A]  INVENTORY: ");
+                Console.SetCursorPosition(0, cityHeight + 3);
+                int rollListLength = 12;
+                if (inventoryStepCount >= totalPeople || inventoryStepCount < 0) { inventoryStepCount = 0; }
+                int inventoryCount = inventoryStepCount;
+                for (int i = 0; i < rollListLength; i++)
+                {
+                    Console.Write($"{personsList[inventoryCount].Name}: ");
+                    foreach (string item in personsList[inventoryCount].Inventory)
+                    {
+                        Console.Write(" " + item);
+                    }
+                    inventoryCount++;                    
+                    if (inventoryCount >= totalPeople) { inventoryCount = 0; }
+                    Console.WriteLine();
+                }
+                inventoryCount = inventoryStepCount;
+                if (autoScroll == true) 
+                {
+                    if (inventoryRollDelay < 4) { inventoryRollDelay++; }
+                    if (inventoryRollDelay == 3)
+                    {
+                        inventoryStepCount++; inventoryRollDelay = 0;
+                    }
+                }
                 //Skriv ut de senaste händelserna, och vänder på listan.
                 Console.SetCursorPosition(cityWidth - 15, cityHeight + 2);
-                Console.WriteLine("Senaste händelser:");
+                Console.WriteLine("SENASTE HÄNDELSER:");
                 if (latestEvents.Count > 12)
                 {
                     latestEvents.RemoveAt(0);
                 }
-                for (int i = 0; i < 12; i++) 
+                for (int i = 0; i < 12; i++)
                 {
                     int index = latestEvents.Count - 1 - i;
                     if (index >= 0)
                     {
                         Console.SetCursorPosition(cityWidth - 15, cityHeight + 3 + i);
                         Console.WriteLine($"{latestEvents[index]}");
-                        
-                    }
-                }
-                //Inventory listan.
-                Console.SetCursorPosition(0, cityHeight + 2);
-                Console.WriteLine("upp[W] ned[S] auto[A]  INVENTORY: ");
-                Console.SetCursorPosition(0, cityHeight + 3);
-                int rollListLength = 12;
-                int inventoryCount = inventoryStepCount;
-                for (int i = 0; i < rollListLength; i++)
-                {
-                    if (inventoryCount >= totalPeople - 1) { inventoryStepCount = 0; }
-                    Console.Write($"{personsList[inventoryCount].Name}: "); 
-                    foreach (string item in personsList[inventoryCount].Inventory)
-                    {
-                        Console.Write(" " + item);
-                    }
-                    Console.WriteLine();
-                    if (inventoryCount >= totalPeople - 1) { break; }
-                    if (inventoryCount < totalPeople - 1) { inventoryCount++; }
-                }
-                if (autoScroll == true) 
-                {
-                    if (inventoryRollDelay < 4) { inventoryRollDelay++; }
-                    if (inventoryRollDelay == 3)
-                    {
-                        if (inventoryCount < totalPeople) inventoryStepCount++; inventoryRollDelay = 0;
                     }
                 }
                 //Hastigheten ifall något händer
@@ -280,36 +272,6 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                       personsList[i].X_coord = x_Positions[i];
                       personsList[i].Y_coord = y_Positions[i];
                 }
-            }
-        }
-        static void UpdatePosition(ref int x, ref int y, int direction)
-        {
-            switch (direction)
-            {
-                case 0:
-                    y--;
-                    break;
-                case 1:
-                    y++;
-                    break;
-                case 2:
-                    x++;
-                    break;
-                case 3:
-                    x--;
-                    break;
-                case 4:
-                    y--; x++;
-                    break;
-                case 5:
-                    y--; x--;
-                    break;
-                case 6:
-                    y++; x++;
-                    break;
-                case 7:
-                    y++; x--;
-                    break;
             }
         }
     }
