@@ -37,48 +37,22 @@ namespace Tjuv_Polis_MinUtveckling26Okt
             bool eventSleep = false;
             Random random = new Random();
             Console.CursorVisible = false;
-            //List<Police> policeList = PoliceFactory.CreatePolice(PoliceNum, width, height, random);
-            //List<Citizen> citizenList = CitizenFactory.CreateCitizens(CitizenNum, width, height, random);
-            //List<Thief> thiefList = ThiefFactory.CreateThieves(thiefNum, width, height, random);
             //Gör personer.
-            string[] policeName = new string[]
-            {
-                "Polisen Svensson", "Polisen Johnsson", "Polisen Davidsson", "Polisen Willhelmsson", "Polisen Andersson", "Polisen Martinsson", "Polisen Börjesson", "Polisen Göransson", "Polisen Carlberg", "Polisen Nilsson",
-                "Polisen Falk", "Polisen Johnson", "Polisen Eriksen", "Polisen Olofsson", "Polisen Lindberg", "Polisen Henriksson", "Polisen Andersson", "Polisen Mårtensson", "Polisen Bergqvist", "Polisen Magnusson", "Polisen Larsson",
-                "Polisen Persson", "Polisen Eriksson", "Polisen Karlsson", "Polisen Johansson", "Polisen Bergström", "Polisen Gustafsson", "Polisen Lundqvist", "Polisen Nyström", "Polisen Holm", "Polisen Ahlström",
-                "Polisen Larsson", "Polisen Sjöberg", "Polisen Andersson", "Polisen Gustavsson", "Polisen Wallin", "Polisen Karlberg", "Polisen Bergman", "Polisen Lindström", "Polisen Persson", "Polisen Sandberg"
-            };
+            int C = 0;
+            int T = 0;
+            int P = 0;
             for (int i = 0; i < policeNum; i++)
             {
-                var police = new Police(policeName[i % policeName.Length], random.Next(1, cityWidth - 1), random.Next(1, cityHeight - 1), 'P', random.Next(8));
-                personsList.Add(police);
+                CreatePerson.CreatePolice(personsList, random, cityWidth, cityHeight, ref P);
             }
-            string[] citizenName = new string[]
-            {
-                "Medborgare Simonsson", "Medborgare Karlsson", "Medborgare Jonsson", "Medborgare Davidsson", "Medborgare Williamsson", "Medborgare Andersson",
-                "Medborgare Martinsson", "Medborgare Börjesson", "Medborgare Klarksson", "Medborgare Andersson", "Medborgare Jenssen", "Medborgare Grenborg",
-                "Medborgare Klausson", "Medborgare Waldemarsson", "Medborgare Tunberg", "Medborgare Mauritz", "Medborgare Hallberg", "Medborgare Larsson", "Medborgare Garcia",
-                "Medborgare Rodriguez", "Medborgare Scottsson", "Medborgare Ljungberg", "Medborgare Klingberg", "Medborgare Wright", "Medborgare Adamsson",
-                "Medborgare Klausson", "Medborgare Grenberg", "Medborgare Redström", "Medborgare Cartelberg", "Medborgare Hallström", "Medborgare Jakobsson"
-            };
             for (int i = 0; i < citizenNum; i++)
             {
-                var citizen = new Citizen(citizenName[i % citizenName.Length], random.Next(1, cityWidth - 1), random.Next(1, cityHeight - 1), 'C', random.Next(8), false);
-                citizen.Inventory.Add("Nycklar");
-                citizen.Inventory.Add("Mobil");
-                citizen.Inventory.Add("Plånbok");
-                citizen.Inventory.Add("Klocka");
-                personsList.Add(citizen);
+                CreatePerson.CreateCitizens(personsList, random, cityWidth, cityHeight, ref C);
+
             }
-            string[] thiefName = new string[]
-            {
-                "Tjuven Tommy", "Tjuven Susie", "Tjuven Bobby", "Tjuven Steve", "Tjuven Vicky", "Tjuven Danny", "Tjuven Rita", "Tjuven Eddie", "Tjuven Maggie",
-                "Tjuven Frankie", "Tjuven Lenny", "Tjuven Connie", "Tjuven Ronny", "Tjuven Lucy", "Tjuven Harry", "Tjuven Penny", "Tjuven Vinny", "Tjuven Mia", "Tjuven Johnny", "Tjuven Gina", "Tjuven Larry"
-            };
             for (int i = 0; i < thiefNum; i++)
             {
-                var thief = new Thief(thiefName[i % citizenName.Length], random.Next(1, cityWidth - 1), random.Next(1, cityHeight - 1), 'T', false, random.Next(8));
-                personsList.Add(thief);
+                CreatePerson.CreateThieves(personsList, random, cityWidth, cityHeight, ref T);
             }
             while (true)
             {
@@ -104,22 +78,16 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                     {
                         case 'C':
                             citizenNum++;
-                            Citizen citizen = new Citizen(citizenName[random.Next(citizenName.Length) % citizenName.Length], random.Next(1, cityWidth - 1), random.Next(1, cityHeight - 1), 'C', random.Next(8), false);
-                            citizen.Inventory.Add("Nycklar");
-                            citizen.Inventory.Add("Mobiltelefon");
-                            citizen.Inventory.Add("Plånbok");
-                            citizen.Inventory.Add("Klocka");
-                            personsList.Add(citizen);
+                            CreatePerson.CreateCitizens(personsList, random, cityWidth, cityHeight, ref C);
                             break;
                         case 'T':
+                            CreatePerson.CreateThieves(personsList, random, cityWidth, cityHeight, ref T);
                             thiefNum++;
-                            Thief thief = new Thief(thiefName[random.Next(thiefName.Length) % thiefName.Length], random.Next(1, cityWidth - 1), random.Next(1, cityHeight - 1), 'T', false, random.Next(8));
-                            personsList.Add(thief);
                             break;
                         case 'P':
+                            
+                            CreatePerson.CreatePolice(personsList, random, cityWidth, cityHeight, ref T);
                             policeNum++;
-                            Police police = new Police(policeName[random.Next(policeName.Length) % policeName.Length], random.Next(1, cityWidth - 1), random.Next(1, cityHeight - 1), 'P', random.Next(8));
-                            personsList.Add(police);
                             break;
                         case 'A':
                             if (autoScroll == true) { autoScroll = false; }
@@ -152,9 +120,9 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                     if (person is Police) { Console.ForegroundColor = ConsoleColor.Blue; }
                     else if (person is Citizen) { Console.ForegroundColor = ConsoleColor.Green; }
                     else if (person is Thief) { Console.ForegroundColor = ConsoleColor.Red; }
-                    Helper.UpdatePosition(ref x_Positions[i], ref y_Positions[i], direction);
                     //Uppdaterar positioner till alla personer i staden, fängelset och fattighuset.
                     //Gör så att personerna kommer ut i andra änden av spelytorna.
+                    Helper.UpdatePosition(ref x_Positions[i], ref y_Positions[i], direction);
                     if (personsList[i].PoorHouseInmate == true)
                     {
                         if (y_Positions[i] > poorHousePosY + (poorHouseHeight - 1)) { y_Positions[i] = poorHousePosY + 1; }

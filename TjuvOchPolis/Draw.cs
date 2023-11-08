@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tjuv_Polis_MinUtveckling26Okt;
 
 namespace TjuvOchPolis
 {
@@ -81,89 +82,70 @@ namespace TjuvOchPolis
             Console.SetCursorPosition(103 + (prisonWidth + 5), 6);
             Console.WriteLine($"Poliser: {policeNum}      [P]++");
         }
-                //public class PoliceFactory
-                //{
-                //    private static readonly string[] PoliceNames = {
-                //"Polisen Svensson", "Detektiv Johnsson", "Sergeant Davidsson",
-                //"Inspektör Willhelmsson", "Kapten Andersson", "Löjtnant Martinsson",
-                //"Officer Börjesson", "Detektiv Göransson",
-                //"Sergant Carlberg", "Inspektör Nilsson"
-                //};
+        public class CreatePerson
+        {
+            public static readonly string[] PoliceNames = {
+                "Polisen Svensson", "Polisen Johnsson", "Polisen Davidsson", "Polisen Willhelmsson", "Polisen Andersson",
+                "Polisen Martinsson", "Polisen Börjesson", "Polisen Göransson", "Polisen Carlberg", "Polisen Nilsson",
+                "Polisen Falk", "Polisen Johnson", "Polisen Eriksen", "Polisen Olofsson", "Polisen Lindberg",
+                "Polisen Henriksson", "Polisen Andersson", "Polisen Mårtensson", "Polisen Bergqvist", "Polisen Magnusson",
+                "Polisen Larsson", "Polisen Persson", "Polisen Eriksson", "Polisen Karlsson", "Polisen Johansson",
+                "Polisen Bergström", "Polisen Gustafsson", "Polisen Lundqvist", "Polisen Nyström", "Polisen Holm",
+                "Polisen Ahlström", "Polisen Larsson", "Polisen Sjöberg", "Polisen Andersson", "Polisen Gustavsson",
+                "Polisen Wallin", "Polisen Karlberg", "Polisen Bergman", "Polisen Lindström", "Polisen Persson", "Polisen Sandberg"
+                };
+            private static readonly string[] CitizenNames = {
+                "Medborgare Simonsson", "Medborgare Karlsson", "Medborgare Jonsson", "Medborgare Davidsson", "Medborgare Williamsson",
+                "Medborgare Andersson", "Medborgare Martinsson", "Medborgare Börjesson", "Medborgare Klarksson", "Medborgare Andersson",
+                "Medborgare Jenssen", "Medborgare Grenborg", "Medborgare Klausson", "Medborgare Waldemarsson", "Medborgare Tunberg",
+                "Medborgare Mauritz", "Medborgare Hallberg", "Medborgare Larsson", "Medborgare Garcia", "Medborgare Rodriguez",
+                "Medborgare Scottsson", "Medborgare Ljungberg", "Medborgare Klingberg", "Medborgare Wright", "Medborgare Adamsson",
+                "Medborgare Klausson", "Medborgare Grenberg", "Medborgare Redström", "Medborgare Cartelberg", "Medborgare Hallström",
+                "Medborgare Jakobsson", "Medborgare Bergqvist", "Medborgare Lindberg", "Medborgare Persson", "Medborgare Nyström",
+                "Medborgare Svensson", "Medborgare Söderström", "Medborgare Johansson", "Medborgare Holmberg", "Medborgare Pettersson",
+                "Medborgare Olofsson", "Medborgare Berglund", "Medborgare Gustafsson", "Medborgare Ekström", "Medborgare Eriksson",
+                "Medborgare Malmström", "Medborgare Forsberg", "Medborgare Nordström", "Medborgare Öberg", "Medborgare Isaksson"
+                };
+            private static readonly string[] ThiefNames = {
+              "Tjuven Tommy", "Tjuven Susie", "Tjuven Bobby", "Tjuven Steve", "Tjuven Vicky",
+                "Tjuven Danny", "Tjuven Rita", "Tjuven Eddie", "Tjuven Maggie", "Tjuven Frankie",
+                "Tjuven Lenny", "Tjuven Connie", "Tjuven Ronny", "Tjuven Lucy", "Tjuven Harry",
+                "Tjuven Penny", "Tjuven Vinny", "Tjuven Mia", "Tjuven Johnny", "Tjuven Gina",
+                "Tjuven Larry", "Tjuven Freddy", "Tjuven Sally", "Tjuven Tony", "Tjuven Wendy",
+                "Tjuven Mickey", "Tjuven Cindy", "Tjuven Bobby", "Tjuven Rosie", "Tjuven Joey"
+                };
 
-                //    public static List<Police> CreatePolice(int count, int width, int height, Random random)
-                //    {
-                //        var policeList = new List<Police>();
+            public static List<Police> CreatePolice(List<Person> personsList, Random random, int cityWidth, int cityHeight, ref int P)
+            {
+                var policeList = new List<Police>();
+                Police police = new Police(PoliceNames[P % PoliceNames.Length], random.Next(1, cityWidth - 1), random.Next(1, cityHeight - 1), 'P', random.Next(8));
+                personsList.Add(police);
+                policeList.Add(police);
+                P++;
+                return policeList;
+            }
+            public static List<Citizen> CreateCitizens(List<Person> personsList, Random random, int cityWidth, int cityHeight, ref int C)
+            {
+                var citizenList = new List<Citizen>();
 
-                //        for (int j = 0; j < count; j++)
-                //        {
-                //            int randomX = random.Next(1, width - 1);
-                //            int randomY = random.Next(1, height - 1);
-                //            var police = new Police(PoliceNames[j % PoliceNames.Length], randomX, randomY, 'P');
-                //            policeList.Add(police);
-                //        }
-
-                //        return policeList;
-                //    }
-                //}
-
-
-
-                //public class CitizenFactory
-                //{
-                //    private static readonly string[] CitizenNames = {
-                //"John Simonsson", "Jane Karlsson", "Michael Jonsson", "Emily Davidsson", "David Williamsson", "Lisa Andersson",
-                //"Sarah Martinsson", "Robert Börjesson", "Maria Klarksson", "William Andersson", "Jennifer Jenssen", "Christoffer Grenborg",
-                //"Klara Klausson", "Richard Waldemarsson", "Patricia Tunberg", "Josef Mauritz", "Linda Hallberg", "Thomas Larsson", "Cynthia Garcia",
-                //"Charles Rodriguez", "Nancy Scottsson", "Daniel Ljungberg", "Susan Klingberg", "Mattias Wright", "Helene Adamsson",
-                //"Kevin Klausson", "Sandra Grenberg", "Andreas Redström", "Maria Cartelberg", "James Hallström", "Daniel Jakobsson"
-                //};
-
-                //    public static List<Citizen> CreateCitizens(int count, int width, int height, Random random)
-                //    {
-                //        var citizenList = new List<Citizen>();
-
-                //        for (int i = 0; i < count; i++)
-                //        {
-                //            int randomX = random.Next(1, width - 1);
-                //            int randomY = random.Next(1, height - 1);
-                //            var citizen = new Citizen(CitizenNames[i % CitizenNames.Length], randomX, randomY, 'C');
-                //            citizen.Inventory.Add("Nycklar");
-                //            citizen.Inventory.Add("Mobiltelefon");
-                //            citizen.Inventory.Add("Plånbok");
-                //            citizen.Inventory.Add("Klocka");
-                //            citizenList.Add(citizen);
-                //        }
-
-                //        return citizenList;
-                //    }
-                //}
-
-
-
-                //public class ThiefFactory
-                //{
-                //    private static readonly string[] ThiefNames = {
-                //"Tommy", "Susie", "Bobby", "Steve", "Vicky",
-                //"Danny", "Rita", "Eddie", "Maggie",
-                //"Frankie", "Lenny", "Connie", "Ronny", "Lucy",
-                //"Harry", "Penny", "Vinny", "Mia", "Johnny", "Gina", "Larry"
-                //};
-
-                //    public static List<Thief> CreateThieves(int count, int width, int height, Random random)
-                //    {
-                //        var thiefList = new List<Thief>();
-
-                //        for (int i = 0; i < count; i++)
-                //        {
-                //            int randomX = random.Next(1, width - 1);
-                //            int randomY = random.Next(1, height - 1);
-                //            var thief = new Thief(ThiefNames[i % ThiefNames.Length], randomX, randomY, 'T');
-                //            thiefList.Add(thief);
-                //        }
-
-                //        return thiefList;
-                //    }
-                //}
+                Citizen citizen = new Citizen(CitizenNames[C % CitizenNames.Length], random.Next(1, cityWidth - 1), random.Next(1, cityHeight - 1), 'C', random.Next(8), false);
+                citizen.Inventory.Add("Nycklar");
+                citizen.Inventory.Add("Mobil");
+                citizen.Inventory.Add("Plånbok");
+                citizen.Inventory.Add("Klocka");
+                personsList.Add(citizen);
+                C++;
+                return citizenList;
+            }
+            public static List<Thief> CreateThieves(List<Person> personsList, Random random, int cityWidth, int cityHeight, ref int T)
+            {
+                var thiefList = new List<Thief>();
+                Thief thief = new Thief(ThiefNames[T % ThiefNames.Length], random.Next(1, cityWidth - 1), random.Next(1, cityHeight - 1), 'T', false, random.Next(8));
+                personsList.Add(thief);
+                T++;
+                return thiefList;
+            }
+        }
     }
 }
 
