@@ -48,7 +48,10 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                     thivesInPrison++;
                     foreach (string stolenItem in meet_2.Inventory)
                     {
-                        Inventory.Add(stolenItem);
+                        if (meet_1.Inventory.Count < 8) 
+                        {
+                            Inventory.Add(stolenItem);
+                        }
                     }
                     meet_2.Inventory.Clear();
                     meet_2.PrisonInmate = true;
@@ -99,7 +102,10 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                 numOfRobberies++;
                 int Item = new Random().Next(citizen.Inventory.Count);
                 string stolenItem = citizen.Inventory[Item];
-                Inventory.Add(stolenItem);
+                if (meet_2.Inventory.Count < 8)
+                {
+                    Inventory.Add(stolenItem);
+                }
                 citizen.Inventory.RemoveAt(Item);
             }
         }

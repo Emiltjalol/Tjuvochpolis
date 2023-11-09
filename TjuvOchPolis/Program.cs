@@ -102,8 +102,9 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                             break;
                     }
                 }
-               //  Console.Clear();
-                Console.SetCursorPosition(0, 0);
+                Thread.Sleep(400);
+                Console.Clear();
+
                 //Ritar upp allt.
                 Draw.DrawCity(cityWidth, cityHeight);
                 Draw.DrawPrison(prisonPosX, prisonPosY, prisonWidth, prisonHeight);
@@ -111,22 +112,10 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                 Draw.DrawStatistics(prisonWidth, numOfRobberies, thivesInPrison, citizensInPoorHouse, citizenNum, thiefNum, policeNum);
                 for (int i = 0; i < totalPeople; i++)
                 {
+                    int direction = personsList[i].Direction;
+                    Person person = personsList[i];
 
-
-                        int direction = personsList[i].Direction;
-                        int originalX = x_Positions[i];
-                        int originalY = y_Positions[i];
-
-                        Console.SetCursorPosition(originalX, originalY);
-                        Console.Write(" "); // Rensa den gamla positionen
-                        Person person = personsList[i];
-
-
-                        // gamla koden som blinkar  + console.clear
-                        //int direction = personsList[i].Direction;
-                        //Person person = personsList[i];
-
-                        int originalForegroundColor = (int)Console.ForegroundColor;
+                    int originalForegroundColor = (int)Console.ForegroundColor;
                     if (person is Police) { Console.ForegroundColor = ConsoleColor.Blue; }
                     else if (person is Citizen) { Console.ForegroundColor = ConsoleColor.Green; }
                     else if (person is Thief) { Console.ForegroundColor = ConsoleColor.Red; }
@@ -228,7 +217,6 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                         Console.WriteLine($"{latestEvents[index]}");
                     }
                 }
-                Thread.Sleep(400);
                 for (int i = 0; i < totalPeople; i++)//Sparar dom nya positionerna i Arrayerna.
                 {
                       personsList[i].X_coord = x_Positions[i];
