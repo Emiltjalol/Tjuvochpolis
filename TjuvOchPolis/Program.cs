@@ -102,14 +102,59 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                             break;
                     }
                 }
-                Thread.Sleep(400);
-                Console.Clear();
 
+                //Inventory listan.
+                Console.SetCursorPosition(0, cityHeight + 2);
+                Console.WriteLine("upp[W] ned[S] auto[A]  INVENTORY: ");
+                Console.SetCursorPosition(0, cityHeight + 3);
+                int rollListLength = 12;
+                if (inventoryStepCount >= totalPeople || inventoryStepCount < 0) { inventoryStepCount = 0; }
+                int inventoryCount = inventoryStepCount;
+                for (int i = 0; i < rollListLength; i++)
+                {
+                    Console.Write($"{personsList[inventoryCount].Name}: ");
+                    foreach (string item in personsList[inventoryCount].Inventory)
+                    {
+                        Console.Write(" " + item);
+                    }
+                    inventoryCount++;
+                    if (inventoryCount >= totalPeople) { inventoryCount = 0; }
+                    Console.WriteLine();
+                }
+                inventoryCount = inventoryStepCount;
+                if (autoScroll == true)
+                {
+                    if (inventoryRollDelay < 4) { inventoryRollDelay++; }
+                    if (inventoryRollDelay == 3)
+                    {
+                        inventoryStepCount++; inventoryRollDelay = 0;
+                    }
+                }
+                //Skriv ut de senaste händelserna, och vänder på listan.
+                Console.SetCursorPosition(cityWidth - 15, cityHeight + 2);
+                Console.WriteLine("SENASTE HÄNDELSER:");
+                if (latestEvents.Count > 12)
+                {
+                    latestEvents.RemoveAt(0);
+                }
+                for (int i = 0; i < 12; i++)
+                {
+                    int index = latestEvents.Count - 1 - i;
+                    if (index >= 0)
+                    {
+                        Console.SetCursorPosition(cityWidth - 15, cityHeight + 3 + i);
+                        Console.WriteLine($"{latestEvents[index]}");
+                    }
+                }
+               
                 //Ritar upp allt.
+                Draw.DrawStatistics(prisonWidth, numOfRobberies, thivesInPrison, citizensInPoorHouse, citizenNum, thiefNum, policeNum);
                 Draw.DrawCity(cityWidth, cityHeight);
                 Draw.DrawPrison(prisonPosX, prisonPosY, prisonWidth, prisonHeight);
                 Draw.DrawPoorHouse(poorHousePosX, poorHousePosY, poorHouseWidth, poorHouseHeight);
-                Draw.DrawStatistics(prisonWidth, numOfRobberies, thivesInPrison, citizensInPoorHouse, citizenNum, thiefNum, policeNum);
+                Thread.Sleep(400);
+                Console.Clear();
+
                 for (int i = 0; i < totalPeople; i++)
                 {
                     int direction = personsList[i].Direction;
@@ -174,53 +219,10 @@ namespace Tjuv_Polis_MinUtveckling26Okt
                         }
                     }
                 }
-                //Inventory listan.
-                Console.SetCursorPosition(0, cityHeight + 2);
-                Console.WriteLine("upp[W] ned[S] auto[A]  INVENTORY: ");
-                Console.SetCursorPosition(0, cityHeight + 3);
-                int rollListLength = 12;
-                if (inventoryStepCount >= totalPeople || inventoryStepCount < 0) { inventoryStepCount = 0; }
-                int inventoryCount = inventoryStepCount;
-                for (int i = 0; i < rollListLength; i++)
-                {
-                    Console.Write($"{personsList[inventoryCount].Name}: ");
-                    foreach (string item in personsList[inventoryCount].Inventory)
-                    {
-                        Console.Write(" " + item);
-                    }
-                    inventoryCount++;
-                    if (inventoryCount >= totalPeople) { inventoryCount = 0; }
-                    Console.WriteLine();
-                }
-                inventoryCount = inventoryStepCount;
-                if (autoScroll == true)
-                {
-                    if (inventoryRollDelay < 4) { inventoryRollDelay++; }
-                    if (inventoryRollDelay == 3)
-                    {
-                        inventoryStepCount++; inventoryRollDelay = 0;
-                    }
-                }
-                //Skriv ut de senaste händelserna, och vänder på listan.
-                Console.SetCursorPosition(cityWidth - 15, cityHeight + 2);
-                Console.WriteLine("SENASTE HÄNDELSER:");
-                if (latestEvents.Count > 12)
-                {
-                    latestEvents.RemoveAt(0);
-                }
-                for (int i = 0; i < 12; i++)
-                {
-                    int index = latestEvents.Count - 1 - i;
-                    if (index >= 0)
-                    {
-                        Console.SetCursorPosition(cityWidth - 15, cityHeight + 3 + i);
-                        Console.WriteLine($"{latestEvents[index]}");
-                    }
-                }
                 for (int i = 0; i < totalPeople; i++)//Sparar dom nya positionerna i Arrayerna.
                 {
-                      personsList[i].X_coord = x_Positions[i];
-                      personsList[i].Y_coord = y_Positions[i];
+                    personsList[i].X_coord = x_Positions[i];
+                    personsList[i].Y_coord = y_Positions[i];
                 }
             }
         }
